@@ -188,9 +188,9 @@ void YumiHW::registerJointLimits(const std::string& joint_name,
 		{
 			// Get limits from the URDF file.
 			if (joint_limits_interface::getJointLimits(urdf_joint, limits))
-			has_limits = true;
+				has_limits = true;
 			if (joint_limits_interface::getSoftJointLimits(urdf_joint, soft_limits))
-			has_soft_limits = true;
+				has_soft_limits = true;
 		}
     }
 
