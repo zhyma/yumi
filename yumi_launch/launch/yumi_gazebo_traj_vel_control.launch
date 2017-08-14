@@ -20,7 +20,8 @@
 
 	<!-- URDF / SRDF parameters -->
 	<arg name="yumi_setup" default="default"/>
-    <param name="robot_description" command="$(find xacro)/xacro.py '$(find yumi_description)/urdf/yumi.urdf.xacro' arms_interface:=$(arg arms_hardware_interface) grippers_interface:=$(arg grippers_hardware_interface) yumi_setup:=$(arg yumi_setup)" />
+	<arg name="optodaq_sensors" default="false"/>
+    <param name="robot_description" command="$(find xacro)/xacro.py '$(find yumi_description)/urdf/yumi.urdf.xacro' arms_interface:=$(arg arms_hardware_interface) grippers_interface:=$(arg grippers_hardware_interface) yumi_setup:=$(arg yumi_setup) optodaq_sensors:=$(arg optodaq_sensors)" />
     <arg name="yumi_initial_pos" default="-J yumi_joint_1_l -1.41 
     									  -J yumi_joint_2_l -2.1
     									  -J yumi_joint_3_l 0.30
