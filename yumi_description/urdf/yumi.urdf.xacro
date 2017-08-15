@@ -19,46 +19,23 @@
   </xacro:yumi>
 
 
+  <xacro:yumi_optodaq_sensor name="optodaq_r" parent="yumi_link_7_r">
+    <origin xyz="0 0 0.033" rpy="0 0 ${PI}" />
+  </xacro:yumi_optodaq_sensor>
 
+  <xacro:yumi_optodaq_sensor name="optodaq_l" parent="yumi_link_7_l">
+    <origin xyz="0 0 0.033" rpy="0 0 ${PI}" />
+  </xacro:yumi_optodaq_sensor>
 
+  <!--right gripper-->
+  <xacro:yumi_servo_gripper name="gripper_r" hardware_interface="hardware_interface/$(arg grippers_interface)" parent="optodaq_r_sensor_link">
+    <origin xyz="0 0 0.033" rpy="0 0 ${PI}" />
+  </xacro:yumi_servo_gripper>
 
-
-  <xacro:property name="optodaq_sensors" value="$(arg optodaq_sensors)" />
-
-  <xacro:if value="${optodaq_sensors == 'false'}">
-	
-	<!--right gripper-->
-	<xacro:yumi_servo_gripper name="gripper_r" hardware_interface="hardware_interface/$(arg grippers_interface)" parent="yumi_link_7_r">
-		<origin xyz="0 0 0.007" rpy="0 0 ${PI}" />
-	</xacro:yumi_servo_gripper>
-
-	<!--left gripper-->
-	<xacro:yumi_servo_gripper name="gripper_l" hardware_interface="hardware_interface/$(arg grippers_interface)" parent="yumi_link_7_l">
-		<origin xyz="0 0 0.007" rpy="0 0 ${PI}" />
-	</xacro:yumi_servo_gripper>
-
-  </xacro:if>
-
-
-  <xacro:if value="${optodaq_sensors == 'true'}">
-    <xacro:yumi_optodaq_sensor name="optodaq_r" parent="yumi_link_7_r">
-      <origin xyz="0 0 0.033" rpy="0 0 ${PI}" />
-    </xacro:yumi_optodaq_sensor>
-
-    <xacro:yumi_optodaq_sensor name="optodaq_l" parent="yumi_link_7_l">
-      <origin xyz="0 0 0.033" rpy="0 0 ${PI}" />
-    </xacro:yumi_optodaq_sensor>
-
-    <!--right gripper-->
-    <xacro:yumi_servo_gripper name="gripper_r" hardware_interface="hardware_interface/$(arg grippers_interface)" parent="optodaq_r_sensor_link">
-      <origin xyz="0 0 0.033" rpy="0 0 ${PI}" />
-    </xacro:yumi_servo_gripper>
-
-    <!--left gripper-->
-    <xacro:yumi_servo_gripper name="gripper_l" hardware_interface="hardware_interface/$(arg grippers_interface)" parent="optodaq_l_sensor_link">
-      <origin xyz="0 0 0.033" rpy="0 0 ${PI}" />
-    </xacro:yumi_servo_gripper>
-  </xacro:if>
+  <!--left gripper-->
+  <xacro:yumi_servo_gripper name="gripper_l" hardware_interface="hardware_interface/$(arg grippers_interface)" parent="optodaq_l_sensor_link">
+    <origin xyz="0 0 0.033" rpy="0 0 ${PI}" />
+  </xacro:yumi_servo_gripper>
 
 
 

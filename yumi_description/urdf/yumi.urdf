@@ -636,8 +636,38 @@
   </transmission>
   <!--joint between {parent} and base-->
   <joint name="yumi_link_7_r_joint" type="fixed">
-    <origin rpy="0 0 3.14159265359" xyz="0 0 0.007"/>
+    <origin rpy="0 0 3.14159265359" xyz="0 0 0.033"/>
     <parent link="yumi_link_7_r"/>
+    <child link="optodaq_r_sensor_link"/>
+  </joint>
+  <link name="optodaq_r_sensor_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.066" radius="0.035"/>
+      </geometry>
+      <material name="Orange"/>
+    </visual>
+  </link>
+  <!--joint between {parent} and base-->
+  <joint name="yumi_link_7_l_joint" type="fixed">
+    <origin rpy="0 0 3.14159265359" xyz="0 0 0.033"/>
+    <parent link="yumi_link_7_l"/>
+    <child link="optodaq_l_sensor_link"/>
+  </joint>
+  <link name="optodaq_l_sensor_link">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.066" radius="0.035"/>
+      </geometry>
+      <material name="Orange"/>
+    </visual>
+  </link>
+  <!--joint between {parent} and base-->
+  <joint name="optodaq_r_sensor_link_joint" type="fixed">
+    <origin rpy="0 0 3.14159265359" xyz="0 0 0.033"/>
+    <parent link="optodaq_r_sensor_link"/>
     <child link="gripper_r_base"/>
   </joint>
   <link name="gripper_r_base">
@@ -747,9 +777,9 @@
     </actuator>
   </transmission>
   <!--joint between {parent} and base-->
-  <joint name="yumi_link_7_l_joint" type="fixed">
-    <origin rpy="0 0 3.14159265359" xyz="0 0 0.007"/>
-    <parent link="yumi_link_7_l"/>
+  <joint name="optodaq_l_sensor_link_joint" type="fixed">
+    <origin rpy="0 0 3.14159265359" xyz="0 0 0.033"/>
+    <parent link="optodaq_l_sensor_link"/>
     <child link="gripper_l_base"/>
   </joint>
   <link name="gripper_l_base">
@@ -858,4 +888,5 @@
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
+  <!-- Pure YuMi URDF, with no joints connecting it to any other robot or pedestal. Neither accessories. -->
 </robot>
