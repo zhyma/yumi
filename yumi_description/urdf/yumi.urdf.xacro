@@ -8,52 +8,24 @@
   <xacro:include filename="$(find yumi_description)/urdf/yumi.xacro"/>
   <!--Import the yumi servo gripper macro -->
   <xacro:include filename="$(find yumi_description)/urdf/Grippers/yumi_servo_gripper.xacro"/>
-  <!--Import the yumi optodaq sensors macro -->
-  <xacro:include filename="$(find yumi_description)/urdf/Extras/yumi_optodaq_sensors.xacro"/>
   <!-- Import Gazebo plugins -->
   <xacro:include filename="$(find yumi_description)/urdf/Gazebo/gazebo.urdf.xacro"/>
+
 
   <!--yumi-->
   <xacro:yumi name="yumi" hardware_interface="hardware_interface/$(arg arms_interface)" parent="${yumi_parent}" >
     <origin xyz="0 0 0.1" rpy="0 0 0" />
   </xacro:yumi>
 
-
   <!--right gripper-->
-  <xacro:yumi_servo_gripper name="gripper_r" hardware_interface="hardware_interface/$(arg grippers_interface)" parent="${gripper_r_parent}">
-    <origin xyz="0 0 ${gripper_base_z}" rpy="0 0 ${PI}" />
+  <xacro:yumi_servo_gripper name="gripper_r" hardware_interface="hardware_interface/$(arg grippers_interface)" parent="yumi_link_7_r">
+    <origin xyz="0 0 0.007" rpy="0 0 ${PI}" />
   </xacro:yumi_servo_gripper>
 
   <!--left gripper-->
-  <xacro:yumi_servo_gripper name="gripper_l" hardware_interface="hardware_interface/$(arg grippers_interface)" parent="${gripper_l_parent}">
-    <origin xyz="0 0 ${gripper_base_z}" rpy="0 0 ${PI}" />
+  <xacro:yumi_servo_gripper name="gripper_l" hardware_interface="hardware_interface/$(arg grippers_interface)" parent="yumi_link_7_l">
+    <origin xyz="0 0 0.007" rpy="0 0 ${PI}" />
   </xacro:yumi_servo_gripper>
-
-
-
-  <xacro:property name="optodaq" value="$(arg optodaq_sensors)" />
-
-  <xacro:if value="${optodaq == 'false'}">
-	<xacro:property name="gripper_r_parent" value="yumi_link_7_r" />
-	<xacro:property name="gripper_l_parent" value="yumi_link_7_l" />
-	<xacro:property name="gripper_base_z" value="0.007" />
-  </xacro:if>
-
-
-<!--   <xacro:if value="${optodaq == 'true'}">
-	  <xacro:property name="gripper_r_parent" value="optodaq_r_sensor_link" />
-	  <xacro:property name="gripper_l_parent" value="optodaq_l_sensor_link" />
-	  <xacro:property name="gripper_base_z" value="0.033" />
-
-	  <xacro:yumi_optodaq_sensor name="optodaq_r" parent="yumi_link_7_r">
-	    <origin xyz="0 0 0.033" rpy="0 0 ${PI}" />
-	  </xacro:yumi_optodaq_sensor>
-
-	  <xacro:yumi_optodaq_sensor name="optodaq_l" parent="yumi_link_7_l">
-	    <origin xyz="0 0 0.033" rpy="0 0 ${PI}" />
-	  </xacro:yumi_optodaq_sensor>
-  </xacro:if>
- -->
 
 
 
