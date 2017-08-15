@@ -3,7 +3,6 @@
 
 	<arg name="name" default="yumi" doc="The robot name. Ensure this is the same name you give to the arm in the urdf instance."/>
 	
-	<arg name="ip" default="192.168.125.1"/>
 	<rosparam file="$(find yumi_control)/config/position_controllers.yaml" command="load" ns="/yumi"/>
 	<rosparam file="$(find yumi_control)/config/gripper_controllers.yaml" command="load" ns="/yumi"/>
 	<arg name="arm_controllers" default="joint_state_controller 
@@ -28,24 +27,29 @@
     <arg name="grippers_hardware_interface" default="EffortJointInterface"/>
 
     <!-- URDF / SRDF parameters -->
-    <param name="robot_description" command="$(find xacro)/xacro.py '$(find yumi_description)/urdf/yumi.urdf.xacro' arms_interface:=$(arg arms_hardware_interface) grippers_interface:=$(arg grippers_hardware_interface)" />
+    <arg name="yumi_setup" default="default"/>
+    <arg name="optodaq_sensors" default="false"/>
+    <param name="robot_description" command="$(find xacro)/xacro.py '$(find yumi_description)/urdf/yumi.urdf.xacro' arms_interface:=$(arg arms_hardware_interface) grippers_interface:=$(arg grippers_hardware_interface) yumi_setup:=$(arg yumi_setup) optodaq_sensors:=$(optodaq_sensors)" />
 
-	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
-		<remap from="/joint_states" to="/yumi/joint_states" />
-	</node>
 
-	<!-- the real hardware interface /-->
+    <!-- Network parameters -->
+    <arg name="ip" default="192.168.125.1"/> <!--when talking to the real robot controller -->
+    <arg name="port" default="80"/>
+
+
+	<!-- The arms hardware interface -->
 	<node required="true" name="yumi_hw" pkg="yumi_hw" type="yumi_hw_ifce_node" respawn="false" ns="/yumi" output="screen"> <!--launch-prefix="xterm -e gdb - -args"-->
 		<param name="name" value="$(arg name)" />
 		<param name="ip" value="$(arg ip)"/>
 	</node>
 
-
+	<!-- The grippers hardware interface -->
     <node required="true" name="yumi_gripper" pkg="yumi_hw" type="yumi_gripper_node" respawn="false" ns="/yumi" output="screen"> 
         <param name="ip" value="$(arg ip)"/>
     </node>
 
 
+	<!-- Joints states and TF publishers -->
 	<node name="yumi_joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" >
         <rosparam param="source_list">["/yumi/joint_states", "/yumi/gripper_states"]</rosparam>
         <remap from="/joint_states" to="/yumi/joint_states" />

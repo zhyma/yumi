@@ -31,7 +31,9 @@
     <arg name="grippers_hardware_interface" default="EffortJointInterface"/>
 
 	<!-- URDF / SRDF parameters -->
-    <param name="robot_description" command="$(find xacro)/xacro.py '$(find yumi_description)/urdf/yumi.urdf.xacro' arms_interface:=$(arg arms_hardware_interface) grippers_interface:=$(arg grippers_hardware_interface)" />
+	<arg name="yumi_setup" default="default"/>
+	<arg name="optodaq_sensors" default="false"/>
+    <param name="robot_description" command="$(find xacro)/xacro.py '$(find yumi_description)/urdf/yumi.urdf.xacro' arms_interface:=$(arg arms_hardware_interface) grippers_interface:=$(arg grippers_hardware_interface) yumi_setup:=$(arg yumi_setup) optodaq_sensors:=$(arg optodaq_sensors)" />
     <arg name="yumi_initial_pos" default="-J yumi_joint_1_l -1.41 
     									  -J yumi_joint_2_l -2.1
     									  -J yumi_joint_3_l 0.30
@@ -62,6 +64,7 @@
 	    <arg name="debug" value="$(arg debug)" />
 	</include>
 
+	<!-- Joints states and TF publishers -->
 	<node name="yumi_robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
 	    <remap from="/joint_states" to="/yumi/joint_states" />
 	</node>

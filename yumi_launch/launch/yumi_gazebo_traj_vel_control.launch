@@ -52,6 +52,7 @@
 	    <arg name="debug" value="$(arg debug)" />
 	</include>
 
+	<!-- Joints states and TF publishers -->
 	<node name="yumi_robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
 	    <remap from="/joint_states" to="/yumi/joint_states" />
 	</node>

@@ -25,13 +25,14 @@
                                      joint_group_vel_controller_r"/> -->
     <node name="arm_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="$(arg arm_controllers)" ns="/yumi"/>
 
-	<!--  Hardware interfaces for the joints and  grippers -->    
+	<!--  Hardware interfaces for the joints and  grippers -->
     <arg name="arms_hardware_interface" default="VelocityJointInterface"/>
     <arg name="grippers_hardware_interface" default="EffortJointInterface"/>
 
     <!-- URDF / SRDF parameters -->
     <arg name="yumi_setup" default="default"/>
-    <param name="robot_description" command="$(find xacro)/xacro.py '$(find yumi_description)/urdf/yumi.urdf.xacro' arms_interface:=$(arg arms_hardware_interface) grippers_interface:=$(arg grippers_hardware_interface) yumi_setup:=$(arg yumi_setup)" />
+    <arg name="optodaq_sensors" default="false"/>
+    <param name="robot_description" command="$(find xacro)/xacro.py '$(find yumi_description)/urdf/yumi.urdf.xacro' arms_interface:=$(arg arms_hardware_interface) grippers_interface:=$(arg grippers_hardware_interface) yumi_setup:=$(arg yumi_setup) optodaq_sensors:=$(arg optodaq_sensors)" />
     <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model yumi -param robot_description"  respawn="false" output="screen" />
 
     <!-- Network parameters -->
@@ -57,15 +58,14 @@
         <param name="ip" value="$(arg ip)"/>
     </node>
 
+    <!-- Joints states and TF publishers -->
     <node name="yumi_joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" >
         <rosparam param="source_list">["/yumi/joint_states", "/yumi/gripper_states"]</rosparam>
         <remap from="/joint_states" to="/yumi/joint_states" />
     </node>
-
     <node name="yumi_robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
         <remap from="/joint_states" to="/yumi/joint_states" />
     </node>
-
     <node name="joint_remapper" pkg="yumi_hw" type="rws_egm_joints_remap.py" />
 
     <!-- Show robot in Rviz   -->
