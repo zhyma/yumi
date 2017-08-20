@@ -56,15 +56,15 @@ def joint_states_callback(data):
     grippers_state_pub.publish(grippers_state_msg)
 
 
-def gripper_l_cmd_callback(data):
+def gripper_l_cmd_callback(cmd):
     global gripper_l_cmd_pub
-    gripper_l_cmd_msg = -data
+    gripper_l_cmd_msg = -cmd.data
     gripper_l_cmd_pub.publish(gripper_l_cmd_msg)
 
 
-def gripper_r_cmd_callback(data):
+def gripper_r_cmd_callback(cmd):
     global gripper_r_cmd_pub
-    gripper_r_cmd_msg = -data
+    gripper_r_cmd_msg = -cmd.data
     gripper_r_cmd_pub.publish(gripper_r_cmd_msg)
 
 
