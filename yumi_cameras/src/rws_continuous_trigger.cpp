@@ -131,15 +131,14 @@ int main( int argc, char* argv[] )
 
     initRWS();
 
-    std::cout << "hola" << std::endl;
-    rws_interface_->doCameraRequestImage(BOTH_SIDES);
-    ros::Duration(rws_delay_time_).sleep();
-    std::cout << "chao" << std::endl;
 
-    // ros::AsyncSpinner spinner(6); // Use 4 threads
-    // spinner.start();
-    // ros::waitForShutdown();
-
+    ros::Rate rate_trigger(1); // 1 hz
+    while (ros::ok())
+    {
+        std::cout << "Requesting image!" << std::endl;
+        rws_interface_->doCameraRequestImage(BOTH_SIDES);
+        rate_trigger.sleep();
+    }
 
     return EXIT_SUCCESS;
 }
