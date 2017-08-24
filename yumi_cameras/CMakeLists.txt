@@ -26,7 +26,7 @@ include_directories(include ${catkin_INCLUDE_DIRS})
 
 
 
-add_executable(yumi_cameras_rws src/yumi_cameras_rws.cpp)
-target_link_libraries(yumi_cameras_rws ${catkin_LIBRARIES})
+add_executable(rws_continuous_trigger src/rws_continuous_trigger.cpp)
+target_link_libraries(rws_continuous_trigger ${catkin_LIBRARIES})
 
 
