@@ -69,9 +69,9 @@ def start_FTP_server():
     authorizer = DummyAuthorizer()
 
     # Define two users with full r/w permissions, one for each camera
-    authorizer.add_user('right_cam', 'yumiPC', '/home/yumipc/', perm='elradfmwM')
-    authorizer.add_user('left_cam', 'yumiPC', '/home/yumipc/', perm='elradfmwM')
-    # print(os.getcwd())
+    user_home_folder = os.getenv("HOME")
+    authorizer.add_user('right_cam', 'yumiPC', user_home_folder, perm='elradfmwM')
+    authorizer.add_user('left_cam', 'yumiPC', user_home_folder, perm='elradfmwM')
 
     # Instantiate FTP handler class
     handler = CamerasFTPHandler
