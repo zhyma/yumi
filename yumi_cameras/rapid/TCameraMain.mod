@@ -109,17 +109,17 @@ MODULE TCameraMain
         TEST use_camera
             CASE LEFT_CAMERA:
                 requestImage camera_devices.left;
-                TPWrite "Left cam image request";
+                ! TPWrite "Left cam image request";
                 
             CASE RIGHT_CAMERA:
                 requestImage camera_devices.right;
-                TPWrite "Right cam image request";
+                ! TPWrite "Right cam image request";
             
             CASE BOTH_CAMERAS:
-                TPWrite "Both cams image request";
-                TPWrite "Left";
+                !TPWrite "Both cams image request";
+                !TPWrite "Left";
                 requestImage camera_devices.left;
-                TPWrite "Right";
+                !TPWrite "Right";
                 requestImage camera_devices.right;
                 
         
@@ -131,7 +131,7 @@ MODULE TCameraMain
     LOCAL PROC requestImage(VAR CAMERA_DEVICE_RECORD device)
         IF device.present THEN
             CamReqImage device.device;
-            TPWrite "Image requested";
+            !TPWrite "Image requested";
         ENDIF
     ENDPROC
     
@@ -162,7 +162,7 @@ MODULE TCameraMain
     ! Interupt handlers
     !-------------------------------------------------
     LOCAL TRAP runCameraCommandHandler
-        TPWrite "TRAP: Camera command handler";
+        !TPWrite "TRAP: Camera command handler";
         checkData camera_data_left;
         checkData camera_data_right;
         runCommand;
