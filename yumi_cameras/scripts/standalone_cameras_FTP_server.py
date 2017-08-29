@@ -6,10 +6,6 @@ from pyftpdlib.handlers import FTPHandler
 from pyftpdlib.servers import FTPServer
 import numpy as np
 import cv2
-import rospy
-import roslib
-from cv_bridge import CvBridge, CvBridgeError
-from sensor_msgs.msg import Image
 
 
 
@@ -17,42 +13,23 @@ authorizer = None
 handler = None
 server = None
 
-left_cam_pub = None
-right_cam_pub = None
-bridge = CvBridge()
 
 pixels_encoding = "mono8"
 
 
-def publish_image_left_cam(img):
-    global left_cam_pub, bridge
-    try:
-        left_cam_pub.publish(bridge.cv2_to_imgmsg(img, pixels_encoding))
-    except CvBridgeError as e:
-        print(e)
-
-
-def publish_image_right_cam(img):
-    global right_cam_pub, bridge
-    try:
-        right_cam_pub.publish(bridge.cv2_to_imgmsg(img, pixels_encoding))
-    except CvBridgeError as e:
-        print(e)
 
 
 class CamerasFTPHandler(FTPHandler):
     def on_file_received(self, file):
-        # print("Hey! File received. Name:")
-        # print(file)
+        print("Hey! File received. Name:")
+        print(file)
         img = cv2.imread(file, 0)
         if (img is not None):
             if("img_left" in file):
-                # print("Left camera image")
-                publish_image_left_cam(img)
+                print("Left camera image")
         
             elif ("img_right" in file):
-                # print("Right camera image")
-                publish_image_right_cam(img)
+                print("Right camera image")
 
 
 
@@ -97,12 +74,7 @@ def close_FTP_server():
 
 
 def main():
-    global left_cam_pub, right_cam_pub, server
-    rospy.init_node("YumiCamerasNode", anonymous=False)
-    rospy.on_shutdown(close_FTP_server)
-
-    left_cam_pub = rospy.Publisher("/yumi/left_cam_image", Image, queue_size=1)
-    right_cam_pub = rospy.Publisher("/yumi/right_cam_image", Image, queue_size=1)
+    global server
 
     start_FTP_server()
     
