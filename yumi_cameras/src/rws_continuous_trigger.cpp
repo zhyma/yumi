@@ -41,39 +41,36 @@ using namespace abb::rws_interface;
 
 // RWS interface which uses TCP communication for starting the EGM joint mode on YuMi
 boost::shared_ptr<RWSInterfaceYuMi> rws_interface_;
+
 // RWS connection parameters
 std::string rws_ip_, rws_port_;
 double rws_delay_time_;
 int rws_max_signal_retries_;
-bool rws_connection_ready_;
-
-
+float img_exposure = 4.0;
+float main_loop_period = 1.0;
 
 
 void setCameraParams(CameraData* camera_data)
 {
-    camera_data->setExposureTime(1.0);
+    camera_data->setExposureTime(img_exposure);
 }
-
-
 
 bool sendCameraParams()
 {
     DualCameraData dual_camera_data;
 
+    /* Verify that is possible to get/set the camera parameters through RWS */
     if(!rws_interface_->getData(&dual_camera_data))
     {
-        ROS_ERROR_STREAM(ros::this_node::getName() << ": robot unavailable, make sure to set the robot to AUTO mode on the flexpendant.");
+        ROS_ERROR_STREAM(ros::this_node::getName() << ": cameras unavalaible, make sure that the FlexPendant is in Auto mode and the camera module is running.");
         return false;
     }
 
+    /* Set camera parameters (exposure) */
     setCameraParams(&dual_camera_data.left);
     setCameraParams(&dual_camera_data.right);
 
-    // rws_interface_->setData(dual_camera_data);
-
-    // rws_interface_->getData(&dual_camera_data);
-
+    /* Send desired parameters to cameras */
     rws_interface_->doCameraSetExposure(dual_camera_data, BOTH_SIDES);
 
     return true;
@@ -86,35 +83,30 @@ bool initRWS()
     rws_interface_.reset(new RWSInterfaceYuMi(rws_ip_, rws_port_));
     ros::Duration(rws_delay_time_).sleep();
 
-    // Check that RAPID is running on the robot and that robot is in AUTO mode
+    /* Check that RAPID is running on the robot and that robot is in AUTO mode */
     if(!rws_interface_->isRAPIDRunning())
     {
         ROS_ERROR_STREAM(ros::this_node::getName() << ": robot unavailable, make sure that the RAPID program is running on the flexpendant.");
         return false;
     }
-
     ros::Duration(rws_delay_time_).sleep();
-
     if(!rws_interface_->isModeAuto())
     {
         ROS_ERROR_STREAM(ros::this_node::getName() << ": robot unavailable, make sure to set the robot to AUTO mode on the flexpendant.");
         return false;
     }
-
     ros::Duration(rws_delay_time_).sleep();
 
 
+    /* Send camera parameters to the robot controller */
     if(!sendCameraParams()) 
     {
         ROS_ERROR_STREAM(ros::this_node::getName() << ": robot unavailable, make sure that the camera firmware is correctly set-up.");
         return false;
     }
-
-
-    rws_connection_ready_ = true;
     ros::Duration(rws_delay_time_).sleep();
 
-    return rws_connection_ready_;
+    return true;
 }
 
 
@@ -129,16 +121,21 @@ int main( int argc, char* argv[] )
     nh.param("rws_delay_time", rws_delay_time_, 1.0);
     nh.param("rws_max_signal_retries", rws_max_signal_retries_, 5);
 
+    /* Initialize cameras via RWS */
     bool init_result = initRWS();
 
+    /* A rate object for making our main loop sleep every second. Trigger frequency = 1/main_loop_period Hz */
+    ros::Rate rate_trigger(1.0 / main_loop_period); 
 
-    ros::Rate rate_trigger(1); // 1 hz
     if(init_result)
     {
         while (ros::ok())
         {
             std::cout << "Requesting image!" << std::endl;
+
+            /* Request images from cameras (LEFT_SIDE, RIGHT_SIDE or BOTH_SIDES)*/
             rws_interface_->doCameraRequestImage(BOTH_SIDES);
+
             rate_trigger.sleep();
         }
     }
