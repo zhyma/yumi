@@ -129,15 +129,18 @@ int main( int argc, char* argv[] )
     nh.param("rws_delay_time", rws_delay_time_, 1.0);
     nh.param("rws_max_signal_retries", rws_max_signal_retries_, 5);
 
-    initRWS();
+    bool init_result = initRWS();
 
 
     ros::Rate rate_trigger(1); // 1 hz
-    while (ros::ok())
+    if(init_result)
     {
-        std::cout << "Requesting image!" << std::endl;
-        rws_interface_->doCameraRequestImage(BOTH_SIDES);
-        rate_trigger.sleep();
+        while (ros::ok())
+        {
+            std::cout << "Requesting image!" << std::endl;
+            rws_interface_->doCameraRequestImage(BOTH_SIDES);
+            rate_trigger.sleep();
+        }
     }
 
     return EXIT_SUCCESS;
