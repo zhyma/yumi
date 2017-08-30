@@ -6,6 +6,9 @@ from pyftpdlib.handlers import FTPHandler
 from pyftpdlib.servers import FTPServer
 import numpy as np
 import cv2
+import logging
+
+
 
 
 
@@ -21,8 +24,8 @@ pixels_encoding = "mono8"
 
 class CamerasFTPHandler(FTPHandler):
     def on_file_received(self, file):
-        print("Hey! File received. Name:")
-        print(file)
+        # print("Hey! File received. Name:")
+        # print(file)
         img = cv2.imread(file, 0)
         if (img is not None):
             if("img_left" in file):
@@ -46,21 +49,26 @@ def start_FTP_server():
     authorizer = DummyAuthorizer()
 
     # Define two users with full r/w permissions, one for each camera
-    authorizer.add_user('right_cam', 'yumiPC', '/home/yumipc/', perm='elradfmwM')
-    authorizer.add_user('left_cam', 'yumiPC', '/home/yumipc/', perm='elradfmwM')
-    # print(os.getcwd())
+    user_home_folder = os.getenv("HOME")
+    authorizer.add_user('right_cam', 'yumiPC', user_home_folder, perm='elradfmwM')
+    authorizer.add_user('left_cam', 'yumiPC', user_home_folder, perm='elradfmwM')
+    print(user_home_folder)
 
     # Instantiate FTP handler class
     handler = CamerasFTPHandler
     handler.authorizer = authorizer
+
+    # Define a customized banner (string returned when client connects)
+    handler.banner = "pyftpdlib based ftpd ready."
+    handler.permit_privileged_ports = True
 
     # Instantiate FTP server class and listen on 0.0.0.0:2121
     address = ('192.168.125.50', 2121)
     server = FTPServer(address, handler)
 
     # set a limit for connections
-    server.max_cons = 256
-    server.max_cons_per_ip = 5
+    server.max_cons = 512
+    server.max_cons_per_ip = 0      # 0 == no limit
 
     # start ftp server
     server.serve_forever()
@@ -76,6 +84,7 @@ def close_FTP_server():
 def main():
     global server
 
+    logging.basicConfig(level=logging.DEBUG)
     start_FTP_server()
     
 
