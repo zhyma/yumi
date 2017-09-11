@@ -95,6 +95,31 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
+        kinect2:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        left_kinect_base:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        middle_kinect_base:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        right_kinect_base:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        table:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         world:
           Alpha: 1
           Show Axes: false
@@ -174,6 +199,11 @@ Visualization Manager:
           Show Trail: false
           Value: true
         yumi_link_7_r:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        yumi_pedestal:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -336,25 +366,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 2.45712185
+      Distance: 2.69956279
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.000944708241
-        Y: 0.0617504753
-        Z: 0.130811974
+        X: -0.0311245974
+        Y: 0.0380942002
+        Z: 0.878547847
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.0500000007
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.164968178
+      Pitch: 0.21593526
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 6.27035189
+      Yaw: 6.27796221
     Saved: ~
 Window Geometry:
   Displays:
