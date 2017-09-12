@@ -11,7 +11,8 @@
 				       default_planner_request_adapters/FixStartStateCollision
 				       default_planner_request_adapters/FixStartStatePathConstraints" />
 
-  <arg name="start_state_max_bounds_error" value="0.1" />
+  <!-- This is important to keep YUMI in working condition while motion. This was previously set as 0.1 -->
+  <arg name="start_state_max_bounds_error" value="0.01" />
 
   <param name="planning_plugin" value="$(arg planning_plugin)" />
   <param name="request_adapters" value="$(arg planning_adapters)" />
