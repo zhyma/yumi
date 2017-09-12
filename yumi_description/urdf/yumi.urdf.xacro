@@ -82,13 +82,13 @@
 	      </geometry>
 	      <material name="Grey" />
 	    </visual>
-	    <collision>
+<!-- 	    <collision>
 	      <origin xyz="0 0 0" rpy="${-PI/2} 0 ${-PI/2}" />
 	      <geometry>
 	        <mesh scale="0.001 0.001 0.001" filename="package://yumi_description/meshes/accesories/steelTable.stl"/>
 	      </geometry>
 	      <material name="Grey" />
-	    </collision>
+	    </collision> -->
 	</link>
 
 	<joint name="table_to_extension_bottom" type="fixed">
@@ -106,13 +106,13 @@
 	      </geometry>
 	      <material name="Grey" />
 	    </visual>
-	    <collision>
+<!-- 	    <collision>
 	      <origin xyz="0 0 0" rpy="0 0 ${PI/2}" />
 	      <geometry>
 	        <mesh scale="0.001 0.001 0.001" filename="package://yumi_description/meshes/accesories/tableExtension.stl"/>
 	      </geometry>
 	      <material name="Grey" />
-	    </collision>
+	    </collision> -->
 	</link>
 
 
@@ -131,13 +131,13 @@
 	      </geometry>
 	      <material name="White" />
 	    </visual>
-	    <collision>
+<!-- 	    <collision>
 	      <origin xyz="0 0 0" rpy="0 0 ${PI/2}" />
 	      <geometry>
 	        <mesh scale="0.001 0.001 0.001" filename="package://yumi_description/meshes/accesories/tableExtension.stl"/>
 	      </geometry>
 	      <material name="White" />
-	    </collision>
+	    </collision> -->
 	</link>
 
 
@@ -156,84 +156,36 @@
 	    </geometry>
 	    <material name="Black" />
 	  </visual>
-	  <collision>
+<!-- 	  <collision>
 	    <origin xyz="0 0 0" rpy="0 0 0" />
 	    <geometry>
 	      <mesh scale="0.001 0.001 0.001" filename="package://yumi_description/meshes/accesories/KinectXboxOne.stl"/>
 	    </geometry>
 	    <material name="Black" />
-	  </collision>
-	</link>
-
-
-	<link name="left_kinect_base">
-	    <visual>
-	      <origin xyz="0 0 0" rpy="0 0 0" />
-	      <geometry>
-	        <box size="0.2 0.02 0.02" />
-	      </geometry>
-	      <material name="Grey" />
-	    </visual>
-	    <collision>
-	      <origin xyz="0 0 0" rpy="0 0 0" />
-	      <geometry>
-	        <box size="0.2 0.02 0.02" />
-	      </geometry>
-	      <material name="Grey" />
-	    </collision>
-	</link>
-
-
-	<link name="right_kinect_base">
-	    <visual>
-	      <origin xyz="0 0 0" rpy="0 0 0" />
-	      <geometry>
-	        <box size="0.2 0.02 0.02" />
-	      </geometry>
-	      <material name="Grey" />
-	    </visual>
-	    <collision>
-	      <origin xyz="0 0 0" rpy="0 0 0" />
-	      <geometry>
-	        <box size="0.2 0.02 0.02" />
-	      </geometry>
-	      <material name="Grey" />
-	    </collision>
+	  </collision> -->
 	</link>
 
 	<link name="middle_kinect_base">
 	    <visual>
 	      <origin xyz="0 0 0" rpy="0 0 0" />
 	      <geometry>
-	        <box size="0.4 0.02 0.02" />
+	        <box size="0.4 0.15 0.02" />
 	      </geometry>
 	      <material name="Grey" />
 	    </visual>
-	    <collision>
+<!-- 	    <collision>
 	      <origin xyz="0 0 0" rpy="0 0 0" />
 	      <geometry>
-	        <box size="0.4 0.02 0.02" />
+	        <box size="0.4 0.15 0.02" />
 	      </geometry>
 	      <material name="Grey" />
-	    </collision>
+	    </collision> -->
 	</link>
-
-	 <joint name="kinect2_to_right_kinect_base" type="fixed">
-	  <parent link="middle_kinect_base" />
-	  <child link="right_kinect_base" />
-	  <origin rpy="${PI/2} ${0.8*PI/2} 0" xyz="0 0 0" />
-	</joint>
-
-	<joint name="kinect2_to_left_kinect_base" type="fixed">
-	  <parent link="middle_kinect_base" />
-	  <child link="left_kinect_base" />
-	  <origin rpy="${PI/2} ${-0.8*PI/2} 0" xyz="0 0 0" />
-	</joint>
 
 	<joint name="yumi_to_middle_kinect_base" type="fixed">
 	  <parent link="yumi_base_link" />
 	  <child link="middle_kinect_base" />
-	  <origin rpy="0 ${-PI/2} 0" xyz="-0.03 0 0.56" />
+	  <origin rpy="0 ${-0.8*PI/2} 0" xyz="-0.03 0 0.56" />
 	</joint>
 
 	<joint name="middle_kinect_base_to_kinect2" type="fixed">
