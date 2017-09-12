@@ -87,15 +87,15 @@ joint_limits:
     has_acceleration_limits: false
     max_acceleration: 0
   yumi_joint_7_l:
-    min_position: -2.74
-    max_position: 2.74
+    min_position: -2.84
+    max_position: 2.84
     has_velocity_limits: true
     max_velocity: 3.14159265359
     has_acceleration_limits: false
     max_acceleration: 0
   yumi_joint_7_r:
-    min_position: -2.74
-    max_position: 2.74
+    min_position: -2.84
+    max_position: 2.84
     has_velocity_limits: true
     max_velocity: 3.14159265359
     has_acceleration_limits: false

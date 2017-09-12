@@ -62,8 +62,18 @@
     <disable_collisions link1="gripper_r_finger_r" link2="yumi_link_5_r" reason="Never" />
     <disable_collisions link1="gripper_r_finger_r" link2="yumi_link_6_r" reason="Never" />
     <disable_collisions link1="gripper_r_finger_r" link2="yumi_link_7_r" reason="Never" />
+    <disable_collisions link1="kinect2" link2="middle_kinect_base" reason="User" />
+    <disable_collisions link1="middle_kinect_base" link2="yumi_body" reason="User" />
+    <disable_collisions link1="table" link2="table_extension_bottom" reason="User" />
+    <disable_collisions link1="table" link2="table_extension_top" reason="User" />
+    <disable_collisions link1="table" link2="yumi_body" reason="User" />
+    <disable_collisions link1="table" link2="yumi_pedestal" reason="User" />
+    <disable_collisions link1="table_extension_bottom" link2="table_extension_top" reason="User" />
+    <disable_collisions link1="table_extension_bottom" link2="yumi_pedestal" reason="User" />
+    <disable_collisions link1="table_extension_top" link2="yumi_pedestal" reason="User" />
     <disable_collisions link1="yumi_body" link2="yumi_link_1_l" reason="Adjacent" />
     <disable_collisions link1="yumi_body" link2="yumi_link_1_r" reason="Adjacent" />
+    <disable_collisions link1="yumi_body" link2="yumi_pedestal" reason="User" />
     <disable_collisions link1="yumi_link_1_l" link2="yumi_link_1_r" reason="Never" />
     <disable_collisions link1="yumi_link_1_l" link2="yumi_link_2_l" reason="Adjacent" />
     <disable_collisions link1="yumi_link_1_l" link2="yumi_link_3_l" reason="Never" />

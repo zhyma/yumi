@@ -858,4 +858,172 @@
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
+  <!-- Pure YuMi URDF, with no joints connecting it to any other robot or pedestal. Neither accessories. -->
+  <link name="yumi_pedestal">
+    <visual>
+      <origin rpy="-1.57079632679 0 3.14159265359" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://yumi_description/meshes/accesories/KTH_AutoMed_Aluflex_pedestal.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="Grey"/>
+    </visual>
+  </link>
+  <joint name="pedestal_to_table" type="fixed">
+    <parent link="yumi_pedestal"/>
+    <child link="table"/>
+    <origin rpy="0 0 0" xyz="-0.05 0.235 0.05"/>
+  </joint>
+  <link name="table">
+    <visual>
+      <origin rpy="-1.57079632679 0 -1.57079632679" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://yumi_description/meshes/accesories/steelTable.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="Grey"/>
+    </visual>
+    <!-- 	    <collision>
+	      <origin xyz="0 0 0" rpy="${-PI/2} 0 ${-PI/2}" />
+	      <geometry>
+	        <mesh scale="0.001 0.001 0.001" filename="package://yumi_description/meshes/accesories/steelTable.stl"/>
+	      </geometry>
+	      <material name="Grey" />
+	    </collision> -->
+  </link>
+  <joint name="table_to_extension_bottom" type="fixed">
+    <parent link="table"/>
+    <child link="table_extension_bottom"/>
+    <origin rpy="0 0 0" xyz="0.75 -0.71 0.001"/>
+  </joint>
+  <link name="table_extension_bottom">
+    <visual>
+      <origin rpy="0 0 1.57079632679" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://yumi_description/meshes/accesories/tableExtension.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="Grey"/>
+    </visual>
+    <!-- 	    <collision>
+	      <origin xyz="0 0 0" rpy="0 0 ${PI/2}" />
+	      <geometry>
+	        <mesh scale="0.001 0.001 0.001" filename="package://yumi_description/meshes/accesories/tableExtension.stl"/>
+	      </geometry>
+	      <material name="Grey" />
+	    </collision> -->
+  </link>
+  <joint name="table_extension_bottom_to_top" type="fixed">
+    <parent link="table_extension_bottom"/>
+    <child link="table_extension_top"/>
+    <origin rpy="0 0 0" xyz="0 0 0.005"/>
+  </joint>
+  <link name="table_extension_top">
+    <visual>
+      <origin rpy="0 0 1.57079632679" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://yumi_description/meshes/accesories/tableExtension.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="White"/>
+    </visual>
+    <!-- 	    <collision>
+	      <origin xyz="0 0 0" rpy="0 0 ${PI/2}" />
+	      <geometry>
+	        <mesh scale="0.001 0.001 0.001" filename="package://yumi_description/meshes/accesories/tableExtension.stl"/>
+	      </geometry>
+	      <material name="White" />
+	    </collision> -->
+  </link>
+  <joint name="pedestal_to_yumi" type="fixed">
+    <parent link="yumi_pedestal"/>
+    <child link="yumi_base_link"/>
+    <origin rpy="0 0 0" xyz="-0.0625 0 0.05"/>
+  </joint>
+  <link name="kinect2">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://yumi_description/meshes/accesories/KinectXboxOne.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="Black"/>
+    </visual>
+    <!-- 	  <collision>
+	    <origin xyz="0 0 0" rpy="0 0 0" />
+	    <geometry>
+	      <mesh scale="0.001 0.001 0.001" filename="package://yumi_description/meshes/accesories/KinectXboxOne.stl"/>
+	    </geometry>
+	    <material name="Black" />
+	  </collision> -->
+  </link>
+  <!-- 
+	<link name="left_kinect_base">
+	    <visual>
+	      <origin xyz="0 0 0" rpy="0 0 0" />
+	      <geometry>
+	        <box size="0.2 0.02 0.02" />
+	      </geometry>
+	      <material name="Grey" />
+	    </visual>
+	    <collision>
+	      <origin xyz="0 0 0" rpy="0 0 0" />
+	      <geometry>
+	        <box size="0.2 0.02 0.02" />
+	      </geometry>
+	      <material name="Grey" />
+	    </collision>
+	</link>
+
+
+	<link name="right_kinect_base">
+	    <visual>
+	      <origin xyz="0 0 0" rpy="0 0 0" />
+	      <geometry>
+	        <box size="0.2 0.02 0.02" />
+	      </geometry>
+	      <material name="Grey" />
+	    </visual>
+	    <collision>
+	      <origin xyz="0 0 0" rpy="0 0 0" />
+	      <geometry>
+	        <box size="0.2 0.02 0.02" />
+	      </geometry>
+	      <material name="Grey" />
+	    </collision>
+	</link> -->
+  <link name="middle_kinect_base">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <box size="0.4 0.15 0.02"/>
+      </geometry>
+      <material name="Grey"/>
+    </visual>
+    <!-- 	    <collision>
+	      <origin xyz="0 0 0" rpy="0 0 0" />
+	      <geometry>
+	        <box size="0.4 0.15 0.02" />
+	      </geometry>
+	      <material name="Grey" />
+	    </collision> -->
+  </link>
+  <!-- 
+	 <joint name="kinect2_to_right_kinect_base" type="fixed">
+	  <parent link="middle_kinect_base" />
+	  <child link="right_kinect_base" />
+	  <origin rpy="${PI/2} ${0.8*PI/2} 0" xyz="0 0 0" />
+	</joint>
+
+	<joint name="kinect2_to_left_kinect_base" type="fixed">
+	  <parent link="middle_kinect_base" />
+	  <child link="left_kinect_base" />
+	  <origin rpy="${PI/2} ${-0.8*PI/2} 0" xyz="0 0 0" />
+	</joint>
+ -->
+  <joint name="yumi_to_middle_kinect_base" type="fixed">
+    <parent link="yumi_base_link"/>
+    <child link="middle_kinect_base"/>
+    <origin rpy="0 -1.25663706144 0" xyz="-0.03 0 0.56"/>
+  </joint>
+  <joint name="middle_kinect_base_to_kinect2" type="fixed">
+    <parent link="middle_kinect_base"/>
+    <child link="kinect2"/>
+    <origin rpy="-1.57079632679 0 -1.57079632679" xyz="0.2 0 0"/>
+  </joint>
 </robot>
