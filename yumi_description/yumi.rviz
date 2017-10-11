@@ -6,11 +6,11 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
+        - /RobotModel1
         - /RobotModel1/Links1
         - /Tasks1
         - /TF1/Tree1
         - /MarkerArray1
-        - /PointCloud23
         - /MarkerArray2
         - /MarkerArray2/Namespaces1
       Splitter Ratio: 0.664206982
@@ -55,7 +55,7 @@ Visualization Manager:
       Plane Cell Count: 10
       Reference Frame: <Fixed Frame>
       Value: true
-    - Alpha: 1
+    - Alpha: 0.5
       Class: rviz/RobotModel
       Collision Enabled: false
       Enabled: true
@@ -91,6 +91,16 @@ Visualization Manager:
           Show Trail: false
           Value: true
         gripper_r_finger_r:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        optodaq_l_sensor_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        optodaq_r_sensor_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -206,36 +216,6 @@ Visualization Manager:
         {}
       Update Interval: 0
       Value: false
-    - Alpha: 1
-      Autocompute Intensity Bounds: true
-      Autocompute Value Bounds:
-        Max Value: 0.572554946
-        Min Value: -0.598707676
-        Value: true
-      Axis: Z
-      Channel Name: intensity
-      Class: rviz/PointCloud2
-      Color: 255; 255; 255
-      Color Transformer: RGB8
-      Decay Time: 0
-      Enabled: false
-      Invert Rainbow: false
-      Max Color: 255; 255; 255
-      Max Intensity: 4096
-      Min Color: 0; 0; 0
-      Min Intensity: 0
-      Name: PointCloud2
-      Position Transformer: XYZ
-      Queue Size: 10
-      Selectable: true
-      Size (Pixels): 3
-      Size (m): 0.00999999978
-      Style: Points
-      Topic: /camera/depth_registered/points
-      Unreliable: false
-      Use Fixed Frame: true
-      Use rainbow: true
-      Value: false
     - Class: rviz/MarkerArray
       Enabled: true
       Marker Topic: /gplanner/sdf_marker
@@ -243,66 +223,6 @@ Visualization Manager:
       Namespaces:
         {}
       Queue Size: 100
-      Value: true
-    - Alpha: 1
-      Autocompute Intensity Bounds: true
-      Autocompute Value Bounds:
-        Max Value: 10
-        Min Value: -10
-        Value: true
-      Axis: Z
-      Channel Name: intensity
-      Class: rviz/PointCloud2
-      Color: 255; 255; 255
-      Color Transformer: RGB8
-      Decay Time: 0
-      Enabled: false
-      Invert Rainbow: false
-      Max Color: 255; 255; 255
-      Max Intensity: 4096
-      Min Color: 0; 0; 0
-      Min Intensity: 0
-      Name: PointCloud2
-      Position Transformer: XYZ
-      Queue Size: 10
-      Selectable: true
-      Size (Pixels): 3
-      Size (m): 0.00999999978
-      Style: Points
-      Topic: /kinect2/qhd/points
-      Unreliable: false
-      Use Fixed Frame: true
-      Use rainbow: true
-      Value: false
-    - Alpha: 1
-      Autocompute Intensity Bounds: true
-      Autocompute Value Bounds:
-        Max Value: 10
-        Min Value: -10
-        Value: true
-      Axis: Z
-      Channel Name: intensity
-      Class: rviz/PointCloud2
-      Color: 255; 255; 255
-      Color Transformer: RGB8
-      Decay Time: 0
-      Enabled: true
-      Invert Rainbow: false
-      Max Color: 255; 255; 255
-      Max Intensity: 4096
-      Min Color: 0; 0; 0
-      Min Intensity: 0
-      Name: PointCloud2
-      Position Transformer: XYZ
-      Queue Size: 10
-      Selectable: true
-      Size (Pixels): 5
-      Size (m): 0.00999999978
-      Style: Points
-      Topic: /gplanner/fused_pc
-      Unreliable: false
-      Use Fixed Frame: true
-      Use rainbow: true
       Value: true
     - Class: rviz/MarkerArray
       Enabled: true
@@ -336,7 +256,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 2.45712185
+      Distance: 2.04038525
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
@@ -351,10 +271,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.164968178
+      Pitch: 0.48996824
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 6.27035189
+      Yaw: 0.0421859361
     Saved: ~
 Window Geometry:
   Displays:
