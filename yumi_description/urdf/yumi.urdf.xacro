@@ -71,7 +71,7 @@
 	<joint name="pedestal_to_table" type="fixed">
 	  <parent link="yumi_pedestal" />
 	  <child link="table" />
-	  <origin rpy="0 0 0" xyz="-0.05 0.235 ${yumi_height + 0.01}" />
+	  <origin rpy="0 0 0" xyz="0.005 0.235 ${yumi_height }" />
 	</joint>
 
 	<link name="table">
@@ -144,13 +144,13 @@
 	<joint name="pedestal_to_yumi" type="fixed">
 	  <parent link="yumi_pedestal" />
 	  <child link="yumi_base_link" />
-	  <origin rpy="0 0 0" xyz="-0.0625 0 ${yumi_height+0.01}" />
+	  <origin rpy="0 0 0" xyz="0.0 0 ${yumi_height}" />
 	</joint>
 
 
-	<link name="kinect2">
+	<link name="kinect2_link">
 	  <visual>
-	    <origin xyz="0 0 0" rpy="0 0 0" />
+	    <origin xyz="0 0 0" rpy="${PI/2} 0 0" />
 	    <geometry>
 	      <mesh scale="0.001 0.001 0.001" filename="package://yumi_description/meshes/accesories/KinectXboxOne.stl"/>
 	    </geometry>
@@ -169,7 +169,7 @@
 	    <visual>
 	      <origin xyz="0 0 0" rpy="0 0 0" />
 	      <geometry>
-	        <box size="0.4 0.15 0.02" />
+	        <box size="0.6 0.15 0.02" />
 	      </geometry>
 	      <material name="Grey" />
 	    </visual>
@@ -178,21 +178,38 @@
 	      <geometry>
 	        <box size="0.4 0.15 0.02" />
 	      </geometry>
-	      <material name="Grey" />
+	      <material name="Grey" /> ${-PI}
 	    </collision> -->
 	</link>
 
 	<joint name="yumi_to_middle_kinect_base" type="fixed">
 	  <parent link="yumi_base_link" />
 	  <child link="middle_kinect_base" />
-	  <origin rpy="0 ${-0.8*PI/2} 0" xyz="-0.03 0 0.56" />
+	  <origin rpy="0 ${-0.7*PI/2} 0" xyz="0.00 0 0.73" />
 	</joint>
 
-	<joint name="middle_kinect_base_to_kinect2" type="fixed">
-	  <parent link="middle_kinect_base" />
-	  <child link="kinect2" />
-	  <origin rpy="${-PI/2} 0 ${kinect_zrotation_fix}" xyz="0.2 0 0" />
+         <link name="kinect2_rotation">
+          </link>
+
+        <!--<joint name="kinect2_to_kinect2_link" type="fixed">
+	  <parent link="kinect2" />
+	  <child link="kinect2_link" />
+	  <origin rpy="0 0 0" xyz="0.00 0 0.0" />  -3.77  0 ${kinect_zrotation_fix}
+	</joint> -->
+
+        <joint name="kinect2_link_to_kinect2_rotation" type="fixed">
+	  <parent link="kinect2_rotation" />
+	  <child link="kinect2_link" />
+	  <origin rpy="0.0 0.0 ${-PI/2}" xyz="0.0 0.0 0.0" />
 	</joint>
+      
+	<joint name="middle_kinect_base_to_kinect2" type="fixed">
+	  <parent link="yumi_base_link" />
+	  <child link="kinect2_rotation" />
+	  <origin rpy="0.0 2.4426 0.0" xyz="0.14 -0.06 0.92" />
+	</joint>
+
+       
 
 
 </robot>
