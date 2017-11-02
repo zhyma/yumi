@@ -1,6 +1,10 @@
 #ifndef __YUMI_HW_H
 #define __YUMI_HW_H
 
+// STL
+#include <iostream>
+#include <memory>
+
 // boost
 #include <boost/scoped_ptr.hpp>
 
@@ -12,6 +16,7 @@
 #include <hardware_interface/robot_hw.h>
 #include <hardware_interface/joint_state_interface.h>
 #include <hardware_interface/joint_command_interface.h>
+#include <hardware_interface/force_torque_sensor_interface.h>
 #include <transmission_interface/transmission_info.h>
 #include <transmission_interface/transmission_parser.h>
 #include <joint_limits_interface/joint_limits.h>
@@ -26,6 +31,11 @@
 #include <kdl/chain.hpp>
 #include <kdl/chaindynparam.hpp> //this to compute the gravity verctor
 #include <kdl_parser/kdl_parser.hpp>
+
+
+// Optoforce FT sensors
+#include "geometry_msgs/WrenchStamped.h"
+#include "etherdaq_driver/etherdaq_driver.h"
 
 /**
   * Base class for yumi hw interface. Extended later for gazebo and for real robot over rapid
@@ -125,6 +135,18 @@ class YumiHW : public hardware_interface::RobotHW
 		KDL::JntArray joint_position_kdl_, gravity_effort_;
 		KDL::Vector gravity_;
 		*/
+
+		float optodaq_pub_rate_hz;
+
+		hardware_interface::ForceTorqueSensorInterface force_torque_interface_;
+		double robot_force_l_[3], robot_torque_l_[3], robot_force_r_[3], robot_torque_r_[3];
+		std::string optodaq_frame_id_l, optodaq_frame_id_r;
+		optoforce_etherdaq_driver::EtherDAQDriver* etherdaq_driver_l;
+		optoforce_etherdaq_driver::EtherDAQDriver* etherdaq_driver_r;
+		geometry_msgs::WrenchStamped optodaq_data_l;
+		geometry_msgs::WrenchStamped optodaq_data_r;
+		void readFTsensors();
+		boost::mutex ft_data_mutex_r_, ft_data_mutex_l_;
 
     private:
 

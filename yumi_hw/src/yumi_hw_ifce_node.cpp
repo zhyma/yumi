@@ -10,6 +10,7 @@
 #include <std_msgs/Float64.h>
 #include <controller_manager/controller_manager.h>
 #include <boost/interprocess/smart_ptr/unique_ptr.hpp>
+#include <boost/thread.hpp>
 
 /* The Yumi EGM and RWS interfaces */
 #include "yumi_hw/yumi_hw_rapid.h"
@@ -86,6 +87,18 @@ int main( int argc, char** argv )
   /* Get the general robot description, the YumiHW class will take care of parsing what's useful to itself */
   std::string urdf_string = getURDF(yumi_nh, "/robot_description");
 
+  /* Get the parameters for the Optoforce F/T sensors */
+  float optodaq_pub_rate_hz;
+  int optodaq_filter;
+  bool optodaq_cancel_bias;
+  std::string optodaq_ip_l, optodaq_ip_r;
+  std::string optodaq_frame_id_l, optodaq_frame_id_r;
+  yumi_nh.param("optodaq_pub_rate_hz", optodaq_pub_rate_hz, 1000.0f);
+  yumi_nh.param("optodaq_pub_rate_hz", optodaq_filter, 4);
+  yumi_nh.param("optodaq_cancel_bias", optodaq_cancel_bias, false);
+  yumi_nh.param("optodaq_ip_l", optodaq_ip_l, std::string("192.168.125.3"));
+  yumi_nh.param("optodaq_ip_r", optodaq_ip_r, std::string("192.168.125.4"));
+
   YumiHW* yumi_robot;
 
   if(!use_egm)
@@ -109,6 +122,20 @@ int main( int argc, char** argv )
 
   yumi_robot->create(name, urdf_string);
 
+  /* Optoforce F/T sensors interfaces */
+  yumi_robot->optodaq_pub_rate_hz = optodaq_pub_rate_hz;
+  yumi_robot->etherdaq_driver_l = new optoforce_etherdaq_driver::EtherDAQDriver(optodaq_ip_l, optodaq_pub_rate_hz, optodaq_filter);
+  yumi_robot->etherdaq_driver_r = new optoforce_etherdaq_driver::EtherDAQDriver(optodaq_ip_r, optodaq_pub_rate_hz, optodaq_filter);
+  ROS_INFO("--------------------------------------------------------------------------------------------------------------");
+  ROS_INFO("Optoforce 6 axis Force/Torque sensors");
+  ROS_INFO("  Publish rate: %f Hz", optodaq_pub_rate_hz);
+  ROS_INFO("  Filter setting: %i (0 = No filter; 1 = 500 Hz; 2 = 150 Hz; 3 = 50 Hz; 4 = 15 Hz; 5 = 5 Hz; 6 = 1.5 Hz)", optodaq_filter);
+  ROS_INFO("  LEFT sensor parameters:");
+	ROS_INFO("    IP address: %s", optodaq_ip_l.c_str());
+  ROS_INFO("  RIGHT sensor parameters:");
+	ROS_INFO("    IP address: %s", optodaq_ip_r.c_str());
+	ROS_INFO("--------------------------------------------------------------------------------------------------------------");
+
   if(!yumi_robot->init())
   {
     ROS_FATAL_NAMED("yumi_hw","Could not initialize robot real interface");
@@ -126,6 +153,8 @@ int main( int argc, char** argv )
   /* Publisher of the control loop period */
   ros::Publisher control_period_pub;
   control_period_pub = yumi_nh.advertise<std_msgs::Float64>("/yumi/egm_control_period", 1000);
+
+  boost::thread ft_sensors_thread(boost::bind(&YumiHW::readFTsensors, yumi_robot));
 
   /* Main control loop */
   while( !g_quit )

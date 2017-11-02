@@ -4,7 +4,7 @@
 	<arg name="name" default="yumi" doc="The robot name. Ensure this is the same name you give to the arm in the urdf instance."/>
 	
 	<rosparam file="$(find yumi_control)/config/position_controllers.yaml" command="load" ns="/yumi"/>
-	<rosparam file="$(find yumi_control)/config/gripper_controllers.yaml" command="load" ns="/yumi"/>
+	<rosparam file="$(find yumi_control)/config/ft_sensors_controllers.yaml" command="load" ns="/yumi"/>
 	<arg name="arm_controllers" default="joint_state_controller 
 									 joint_pos_controller_1_r
 									 joint_pos_controller_2_r
@@ -19,7 +19,8 @@
 									 joint_pos_controller_3_l
 									 joint_pos_controller_4_l
 									 joint_pos_controller_5_l
-									 joint_pos_controller_6_l"/>
+									 joint_pos_controller_6_l
+									 force_torque_sensor_controller"/>
     <node name="arm_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="$(arg arm_controllers)" ns="/yumi"/>
 
 	<!--  Hardware interfaces for the joints and grippers -->    

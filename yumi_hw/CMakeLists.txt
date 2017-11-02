@@ -25,6 +25,7 @@ find_package(catkin REQUIRED COMPONENTS
   message_generation
   abb_egm_interface
   abb_rws_interface
+  optoforce_etherdaq_driver
 )
 
 ## System dependencies are found with CMake's conventions
@@ -41,6 +42,7 @@ add_service_files(
   FILES
   YumiGrasp.srv
 )
+
 # Generate added messages and services with any dependencies listed here
 generate_messages(
   DEPENDENCIES
@@ -58,9 +60,8 @@ generate_messages(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES ${PROJECT_NAME}
-  CATKIN_DEPENDS cmake_modules control_toolbox controller_interface controller_manager hardware_interface joint_limits_interface kdl_parser realtime_tools roscpp std_msgs tf transmission_interface urdf simple_message abb_egm_interface abb_rws_interface
-#  DEPENDS gazebo
+  LIBRARIES ${PROJECT_NAME} etherdaq_driver
+  CATKIN_DEPENDS cmake_modules control_toolbox controller_interface controller_manager hardware_interface joint_limits_interface kdl_parser realtime_tools roscpp std_msgs tf transmission_interface urdf simple_message abb_egm_interface abb_rws_interface optoforce_etherdaq_driver
 )
 
 ###########

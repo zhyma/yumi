@@ -127,8 +127,7 @@ void YumiHW::registerInterfaces(const urdf::Model *const urdf_model, std::vector
 			<< "' of type '" << hardware_interface << "'" << "\x1B[0m" << std::endl;
 
 		// Create joint state interface for all joints
-		state_interface_.registerHandle(hardware_interface::JointStateHandle(
-				joint_names_[j], &joint_position_[j], &joint_velocity_[j], &joint_effort_[j]));
+		state_interface_.registerHandle(hardware_interface::JointStateHandle(joint_names_[j], &joint_position_[j], &joint_velocity_[j], &joint_effort_[j]));
 
 		//No control in effort space at the moment TODO
 		// Decide what kind of command interface this actuator/joint has
@@ -155,11 +154,30 @@ void YumiHW::registerInterfaces(const urdf::Model *const urdf_model, std::vector
 			&joint_lower_limits_[j], &joint_upper_limits_[j] );
     }
 
-    /* Register interfaces */
+    /* Register YuMi interfaces */
     registerInterface(&state_interface_);
     //registerInterface(&effort_interface_);
     registerInterface(&position_interface_);
-    registerInterface(&velocity_interface_);
+	registerInterface(&velocity_interface_);
+	
+	// Initialize F/T values
+	for(int j=0; j < 3; j++)
+	{
+		robot_force_l_[j] = 0;
+		robot_force_r_[j] = 0;
+		robot_torque_l_[j] = 0;
+		robot_torque_r_[j] = 0;
+	}
+
+	hardware_interface::ForceTorqueSensorHandle ft_handle_l;
+	ft_handle_l = hardware_interface::ForceTorqueSensorHandle("optodaq_l", "optodaq_l_sensor_link", robot_force_l_, robot_torque_l_);
+	force_torque_interface_.registerHandle(ft_handle_l);
+
+	hardware_interface::ForceTorqueSensorHandle ft_handle_r;
+	ft_handle_r = hardware_interface::ForceTorqueSensorHandle("optodaq_r", "optodaq_r_sensor_link", robot_force_r_, robot_torque_r_);
+	force_torque_interface_.registerHandle(ft_handle_r);
+
+	registerInterface(&force_torque_interface_);
 }
 
 // Register the limits of the joint specified by joint_name and\ joint_handle. The limits are
@@ -399,3 +417,37 @@ void YumiHW::enforceLimits(ros::Duration period)
     pj_limits_interface_.enforceLimits(period);
 }
 
+
+void YumiHW::readFTsensors()
+{
+	ros::Rate pub_rate(optodaq_pub_rate_hz);
+	while (ros::ok())
+	{
+		if (etherdaq_driver_l->waitForNewData())
+		{
+			ft_data_mutex_l_.lock();
+			etherdaq_driver_l->getData(optodaq_data_l);			
+			robot_force_l_[0] = optodaq_data_l.wrench.force.x;
+			robot_force_l_[1] = optodaq_data_l.wrench.force.y;
+			robot_force_l_[2] = optodaq_data_l.wrench.force.z;
+			robot_torque_l_[0] = optodaq_data_l.wrench.torque.x;
+			robot_torque_l_[1] = optodaq_data_l.wrench.torque.y;
+			robot_torque_l_[2] = optodaq_data_l.wrench.torque.z;
+			ft_data_mutex_l_.unlock();
+		}
+		if (etherdaq_driver_r->waitForNewData())
+		{
+			ft_data_mutex_r_.lock();
+			etherdaq_driver_r->getData(optodaq_data_r);
+			robot_force_r_[0] = optodaq_data_r.wrench.force.x;
+			robot_force_r_[1] = optodaq_data_r.wrench.force.y;
+			robot_force_r_[2] = optodaq_data_r.wrench.force.z;
+			robot_torque_r_[0] = optodaq_data_r.wrench.torque.x;
+			robot_torque_r_[1] = optodaq_data_r.wrench.torque.y;
+			robot_torque_r_[2] = optodaq_data_r.wrench.torque.z;
+			ft_data_mutex_r_.unlock();
+		}
+
+		pub_rate.sleep();
+	}
+}
