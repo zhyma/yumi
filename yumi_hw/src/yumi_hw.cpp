@@ -84,7 +84,6 @@ void YumiHW::reset()
 
 void YumiHW::registerInterfaces(const urdf::Model *const urdf_model, std::vector<transmission_interface::TransmissionInfo> transmissions)
 {
-
     // Check that this transmission has one joint
     if( transmissions.empty() )
     {
@@ -421,33 +420,28 @@ void YumiHW::enforceLimits(ros::Duration period)
 void YumiHW::readFTsensors()
 {
 	ros::Rate pub_rate(optodaq_pub_rate_hz);
-	while (ros::ok())
+	if (etherdaq_driver_l->waitForNewData())
 	{
-		if (etherdaq_driver_l->waitForNewData())
-		{
-			ft_data_mutex_l_.lock();
-			etherdaq_driver_l->getData(optodaq_data_l);			
-			robot_force_l_[0] = optodaq_data_l.wrench.force.x;
-			robot_force_l_[1] = optodaq_data_l.wrench.force.y;
-			robot_force_l_[2] = optodaq_data_l.wrench.force.z;
-			robot_torque_l_[0] = optodaq_data_l.wrench.torque.x;
-			robot_torque_l_[1] = optodaq_data_l.wrench.torque.y;
-			robot_torque_l_[2] = optodaq_data_l.wrench.torque.z;
-			ft_data_mutex_l_.unlock();
-		}
-		if (etherdaq_driver_r->waitForNewData())
-		{
-			ft_data_mutex_r_.lock();
-			etherdaq_driver_r->getData(optodaq_data_r);
-			robot_force_r_[0] = optodaq_data_r.wrench.force.x;
-			robot_force_r_[1] = optodaq_data_r.wrench.force.y;
-			robot_force_r_[2] = optodaq_data_r.wrench.force.z;
-			robot_torque_r_[0] = optodaq_data_r.wrench.torque.x;
-			robot_torque_r_[1] = optodaq_data_r.wrench.torque.y;
-			robot_torque_r_[2] = optodaq_data_r.wrench.torque.z;
-			ft_data_mutex_r_.unlock();
-		}
-
-		pub_rate.sleep();
+		ft_data_mutex_l_.lock();
+		etherdaq_driver_l->getData(optodaq_data_l);			
+		robot_force_l_[0] = optodaq_data_l.wrench.force.x;
+		robot_force_l_[1] = optodaq_data_l.wrench.force.y;
+		robot_force_l_[2] = optodaq_data_l.wrench.force.z;
+		robot_torque_l_[0] = optodaq_data_l.wrench.torque.x;
+		robot_torque_l_[1] = optodaq_data_l.wrench.torque.y;
+		robot_torque_l_[2] = optodaq_data_l.wrench.torque.z;
+		ft_data_mutex_l_.unlock();
+	}
+	if (etherdaq_driver_r->waitForNewData())
+	{
+		ft_data_mutex_r_.lock();
+		etherdaq_driver_r->getData(optodaq_data_r);
+		robot_force_r_[0] = optodaq_data_r.wrench.force.x;
+		robot_force_r_[1] = optodaq_data_r.wrench.force.y;
+		robot_force_r_[2] = optodaq_data_r.wrench.force.z;
+		robot_torque_r_[0] = optodaq_data_r.wrench.torque.x;
+		robot_torque_r_[1] = optodaq_data_r.wrench.torque.y;
+		robot_torque_r_[2] = optodaq_data_r.wrench.torque.z;
+		ft_data_mutex_r_.unlock();
 	}
 }

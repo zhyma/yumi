@@ -43,8 +43,6 @@
   	<!-- Pure YuMi URDF, with no joints connecting it to any other robot or pedestal. Neither accessories. -->
   </xacro:if>
 
-
-
   <xacro:if value="${yumi_setup == 'default'}">
     <xacro:property name="yumi_parent" value="world" />
     <link name="world"/>
