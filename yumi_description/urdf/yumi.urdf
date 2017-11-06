@@ -66,14 +66,14 @@
       <material name="Light_Grey"/>
     </collision>
   </link>
- <!--///////////////////////////////////// RIGHT ARM ////////////////////////////////  -->
+  <!--///////////////////////////////////// RIGHT ARM ////////////////////////////////  -->
   <!-- joint between body and link_1_r -->
   <joint name="yumi_joint_1_r" type="revolute">
     <parent link="yumi_body"/>
     <child link="yumi_link_1_r"/>
     <origin rpy="-0.9795   -0.5682   -2.3155" xyz="0.05355 -0.0725 0.41492"/>
     <axis xyz="0 0 1"/>
-    <limit effort="300" lower="-2.74087978961" upper="2.74087978961" velocity="3.14159265359"/>
+    <limit effort="300" lower="-2.76634686441" upper="2.76634686441" velocity="3.14159265359"/>
     <dynamics damping="0.5"/>
   </joint>
   <link name="yumi_link_1_r">
@@ -103,7 +103,7 @@
     <child link="yumi_link_2_r"/>
     <origin rpy="1.57079632679 0.0 0.0" xyz="0.03 0.0 0.1"/>
     <axis xyz="0 0 1"/>
-    <limit effort="300" lower="-2.28454747661" upper="0.539218224618" velocity="3.14159265359"/>
+    <limit effort="300" lower="-2.33001455141" upper="0.584685299418" velocity="3.14159265359"/>
     <dynamics damping="0.5"/>
   </joint>
   <link name="yumi_link_2_r">
@@ -133,7 +133,7 @@
     <child link="yumi_link_3_r"/>
     <origin rpy="-1.57079632679 0.0 0.0" xyz="-0.03 0.17283 0.0"/>
     <axis xyz="0 0 1"/>
-    <limit effort="300" lower="-2.73087978961" upper="2.73087978961" velocity="3.14159265359"/>
+    <limit effort="300" lower="-2.76634686441" upper="2.76634686441" velocity="3.14159265359"/>
     <dynamics damping="0.5"/>
   </joint>
   <link name="yumi_link_3_r">
@@ -163,7 +163,7 @@
     <child link="yumi_link_4_r"/>
     <origin rpy="1.57079632679 -1.57079632679 0.0" xyz="-0.04188 0.0 0.07873"/>
     <axis xyz="0 0 1"/>
-    <limit effort="300" lower="-1.95548162621" upper="1.1962634016" velocity="3.14159265359"/>
+    <limit effort="300" lower="-1.98094870101" upper="1.2217304764" velocity="3.14159265359"/>
     <dynamics damping="0.5"/>
   </joint>
   <link name="yumi_link_4_r">
@@ -193,7 +193,7 @@
     <child link="yumi_link_5_r"/>
     <origin rpy="-1.57079632679 0.0 0.0" xyz="0.0405 0.16461 0.0"/>
     <axis xyz="0 0 1"/>
-    <limit effort="300" lower="-4.86145483078" upper="4.86145483078" velocity="6.98131700798"/>
+    <limit effort="300" lower="-4.88692190558" upper="4.88692190558" velocity="6.98131700798"/>
     <dynamics damping="0.5"/>
   </joint>
   <link name="yumi_link_5_r">
@@ -223,7 +223,7 @@
     <child link="yumi_link_6_r"/>
     <origin rpy="1.57079632679 0.0 0.0" xyz="-0.027 0 0.10039"/>
     <axis xyz="0 0 1"/>
-    <limit effort="300" lower="-1.32588974176" upper="2.19855436775" velocity="6.98131700798"/>
+    <limit effort="300" lower="-1.36135681656" upper="2.23402144255" velocity="6.98131700798"/>
     <dynamics damping="0.5"/>
   </joint>
   <link name="yumi_link_6_r">
@@ -253,7 +253,7 @@
     <child link="yumi_link_7_r"/>
     <origin rpy="-1.57079632679 0.0 0.0" xyz="0.027 0.029 0.0"/>
     <axis xyz="0 0 1"/>
-    <limit effort="300" lower="-3.89680398707" upper="3.89680398707" velocity="6.98131700798"/>
+    <limit effort="300" lower="-3.82227106187" upper="3.82227106187" velocity="6.98131700798"/>
     <dynamics damping="0.5"/>
   </joint>
   <link name="yumi_link_7_r">
@@ -284,7 +284,7 @@
     <child link="yumi_link_1_l"/>
     <origin rpy="0.9781 -0.5716 2.3180" xyz="0.05355 0.07250 0.41492"/>
     <axis xyz="0 0 1"/>
-    <limit effort="300" lower="-2.74087978961" upper="2.74087978961" velocity="3.14159265359"/>
+    <limit effort="300" lower="-2.76634686441" upper="2.76634686441" velocity="3.14159265359"/>
     <dynamics damping="0.5"/>
   </joint>
   <link name="yumi_link_1_l">
@@ -314,7 +314,7 @@
     <child link="yumi_link_2_l"/>
     <origin rpy="1.57079632679 0.0 0.0" xyz="0.03 0.0 0.1"/>
     <axis xyz="0 0 1"/>
-    <limit effort="300" lower="-2.28454747661" upper="0.539218224618" velocity="3.14159265359"/>
+    <limit effort="300" lower="-2.33001455141" upper="0.584685299418" velocity="3.14159265359"/>
     <dynamics damping="0.5"/>
   </joint>
   <link name="yumi_link_2_l">
@@ -344,7 +344,7 @@
     <child link="yumi_link_3_l"/>
     <origin rpy="-1.57079632679 0.0 0.0" xyz="-0.03 0.17283 0.0"/>
     <axis xyz="0 0 1"/>
-    <limit effort="300" lower="-2.73087978961" upper="2.73087978961" velocity="3.14159265359"/>
+    <limit effort="300" lower="-2.76634686441" upper="2.76634686441" velocity="3.14159265359"/>
     <dynamics damping="0.5"/>
   </joint>
   <link name="yumi_link_3_l">
@@ -374,7 +374,7 @@
     <child link="yumi_link_4_l"/>
     <origin rpy="1.57079632679 -1.57079632679 0.0" xyz="-0.04188 0.0 0.07873"/>
     <axis xyz="0 0 1"/>
-    <limit effort="300" lower="-1.95548162621" upper="1.1962634016" velocity="3.14159265359"/>
+    <limit effort="300" lower="-2.01585528605" upper="1.2217304764" velocity="3.14159265359"/>
     <dynamics damping="0.5"/>
   </joint>
   <link name="yumi_link_4_l">
@@ -404,7 +404,7 @@
     <child link="yumi_link_5_l"/>
     <origin rpy="-1.57079632679 0.0 0.0" xyz="0.0405 0.16461 0.0"/>
     <axis xyz="0 0 1"/>
-    <limit effort="300" lower="-4.86145483078" upper="4.86145483078" velocity="6.98131700798"/>
+    <limit effort="300" lower="-4.88692190558" upper="4.88692190558" velocity="6.98131700798"/>
     <dynamics damping="0.5"/>
   </joint>
   <link name="yumi_link_5_l">
@@ -434,7 +434,7 @@
     <child link="yumi_link_6_l"/>
     <origin rpy="1.57079632679 0.0 0.0" xyz="-0.027 0 0.10039"/>
     <axis xyz="0 0 1"/>
-    <limit effort="300" lower="-1.32588974176" upper="2.19855436775" velocity="6.98131700798"/>
+    <limit effort="300" lower="-1.3962634016" upper="2.23402144255" velocity="6.98131700798"/>
     <dynamics damping="0.5"/>
   </joint>
   <link name="yumi_link_6_l">
@@ -464,7 +464,7 @@
     <child link="yumi_link_7_l"/>
     <origin rpy="-1.57079632679 0.0 0.0" xyz="0.027 0.029 0.0"/>
     <axis xyz="0 0 1"/>
-    <limit effort="300" lower="-3.89680398707" upper="3.89680398707" velocity="6.98131700798"/>
+    <limit effort="300" lower="-3.82227106187" upper="3.82227106187" velocity="6.98131700798"/>
     <dynamics damping="0.5"/>
   </joint>
   <link name="yumi_link_7_l">
@@ -858,7 +858,22 @@
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
-  <!-- Pure YuMi URDF, with no joints connecting it to any other robot or pedestal. Neither accessories. -->
+  <!--
+	<xacro:property name="yumi_setup" value="$(arg yumi_setup)" />
+
+	<xacro:if value="${yumi_setup == 'robot_centric'}">
+		 Pure YuMi URDF, with no joints connecting it to any other robot or pedestal. Neither accessories. 
+	</xacro:if> -->
+  <!--<xacro:if value="${yumi_setup == 'default'}">
+		<link name="world"/>
+
+		<joint name="world_to_pedestal" type="fixed">
+			<parent link="world" />
+			<child link="yumi_pedestal" />
+			<origin rpy="0 0 0" xyz="0 0 ${pedestal_height}" />
+		</joint>
+
+	</xacro:if> -->
   <link name="yumi_pedestal">
     <visual>
       <origin rpy="-1.57079632679 0 3.14159265359" xyz="0 0 0"/>
@@ -936,9 +951,9 @@
     <child link="yumi_base_link"/>
     <origin rpy="0 0 0" xyz="0.0 0 0.05"/>
   </joint>
-  <link name="kinect2">
+  <link name="kinect2_link">
     <visual>
-      <origin rpy="1.5707 0 0" xyz="0 0 0"/>
+      <origin rpy="1.57079632679 0 0" xyz="0 0 0"/>
       <geometry>
         <mesh filename="package://yumi_description/meshes/accesories/KinectXboxOne.stl" scale="0.001 0.001 0.001"/>
       </geometry>
@@ -952,46 +967,11 @@
 	    <material name="Black" />
 	  </collision> -->
   </link>
-  <!-- 
-	<link name="left_kinect_base">
-	    <visual>
-	      <origin xyz="0 0 0" rpy="0 0 0" />
-	      <geometry>
-	        <box size="0.2 0.02 0.02" />
-	      </geometry>
-	      <material name="Grey" />
-	    </visual>
-	    <collision>
-	      <origin xyz="0 0 0" rpy="0 0 0" />
-	      <geometry>
-	        <box size="0.2 0.02 0.02" />
-	      </geometry>
-	      <material name="Grey" />
-	    </collision>
-	</link>
-
-
-	<link name="right_kinect_base">
-	    <visual>
-	      <origin xyz="0 0 0" rpy="0 0 0" />
-	      <geometry>
-	        <box size="0.2 0.02 0.02" />
-	      </geometry>
-	      <material name="Grey" />
-	    </visual>
-	    <collision>
-	      <origin xyz="0 0 0" rpy="0 0 0" />
-	      <geometry>
-	        <box size="0.2 0.02 0.02" />
-	      </geometry>
-	      <material name="Grey" />
-	    </collision>
-	</link> -->
   <link name="middle_kinect_base">
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <box size="0.4 0.15 0.02"/>
+        <box size="0.6 0.15 0.02"/>
       </geometry>
       <material name="Grey"/>
     </visual>
@@ -1000,30 +980,29 @@
 	      <geometry>
 	        <box size="0.4 0.15 0.02" />
 	      </geometry>
-	      <material name="Grey" />
+	      <material name="Grey" /> ${-PI}
 	    </collision> -->
   </link>
-  <!-- 
-	 <joint name="kinect2_to_right_kinect_base" type="fixed">
-	  <parent link="middle_kinect_base" />
-	  <child link="right_kinect_base" />
-	  <origin rpy="${PI/2} ${0.8*PI/2} 0" xyz="0 0 0" />
-	</joint>
-
-	<joint name="kinect2_to_left_kinect_base" type="fixed">
-	  <parent link="middle_kinect_base" />
-	  <child link="left_kinect_base" />
-	  <origin rpy="${PI/2} ${-0.8*PI/2} 0" xyz="0 0 0" />
-	</joint>
- -->
   <joint name="yumi_to_middle_kinect_base" type="fixed">
     <parent link="yumi_base_link"/>
     <child link="middle_kinect_base"/>
-    <origin rpy="0 -1.09955742876 0" xyz="-0.03 0 0.7"/>
+    <origin rpy="0 -1.09955742876 0" xyz="0.00 0 0.73"/>
+  </joint>
+  <link name="kinect2_rotation">
+          </link>
+  <!--<joint name="kinect2_to_kinect2_link" type="fixed">
+	  <parent link="kinect2" />
+	  <child link="kinect2_link" />
+	  <origin rpy="0 0 0" xyz="0.00 0 0.0" />  -3.77  0 ${kinect_zrotation_fix}
+	</joint> -->
+  <joint name="kinect2_link_to_kinect2_rotation" type="fixed">
+    <parent link="kinect2_rotation"/>
+    <child link="kinect2_link"/>
+    <origin rpy="0.0 0.0 -1.57079632679" xyz="0.0 0.0 0.0"/>
   </joint>
   <joint name="middle_kinect_base_to_kinect2" type="fixed">
-    <parent link="middle_kinect_base"/>
-    <child link="kinect2"/>
-    <origin rpy="-3.14159 0 -1.57079632679" xyz="0.25 0 -0.1"/>
+    <parent link="yumi_base_link"/>
+    <child link="kinect2_rotation"/>
+    <origin rpy="0.0 2.4426 0.0" xyz="0.14 -0.06 0.92"/>
   </joint>
 </robot>

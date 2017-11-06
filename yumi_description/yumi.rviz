@@ -95,7 +95,7 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        kinect2:
+        kinect2_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -345,7 +345,7 @@ Visualization Manager:
   Enabled: true
   Global Options:
     Background Color: 200; 200; 200
-    Fixed Frame: world
+    Fixed Frame: yumi_pedestal
     Frame Rate: 30
   Name: root
   Tools:

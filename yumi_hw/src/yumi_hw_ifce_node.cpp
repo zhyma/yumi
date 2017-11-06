@@ -128,7 +128,7 @@ int main( int argc, char** argv )
   control_period_pub = yumi_nh.advertise<std_msgs::Float64>("/yumi/egm_control_period", 1000);
 
   /* Main control loop */
-  while( !g_quit )
+  while( !g_quit || !ros::ok() )
   {
     // get the time / period
     if (!clock_gettime(CLOCK_MONOTONIC, &ts))
