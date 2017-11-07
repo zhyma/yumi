@@ -32,6 +32,8 @@
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
     <end_effector name="left_gripper_ee" parent_link="yumi_link_7_l" group="left_gripper" parent_group="left_arm" />
     <end_effector name="right_gripper_ee" parent_link="yumi_link_7_r" group="right_gripper" parent_group="right_arm" />
+    <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->
+    <virtual_joint name="root" type="fixed" parent_frame="yumi_body" child_link="yumi_pedestal" />
     <!--PASSIVE JOINT: Purpose: this element is used to mark joints that are not actuated-->
     <passive_joint name="gripper_l_joint_m" />
     <passive_joint name="gripper_r_joint_m" />
@@ -62,7 +64,9 @@
     <disable_collisions link1="gripper_r_finger_r" link2="yumi_link_5_r" reason="Never" />
     <disable_collisions link1="gripper_r_finger_r" link2="yumi_link_6_r" reason="Never" />
     <disable_collisions link1="gripper_r_finger_r" link2="yumi_link_7_r" reason="Never" />
-    <disable_collisions link1="kinect2" link2="middle_kinect_base" reason="User" />
+    <disable_collisions link1="kinect2_link" link2="yumi_base_link" reason="User" />
+    <disable_collisions link1="kinect2_rotation" link2="yumi_base_link" reason="User" />
+    <disable_collisions link1="kinect2_link" link2="middle_kinect_base" reason="User" />
     <disable_collisions link1="middle_kinect_base" link2="yumi_body" reason="User" />
     <disable_collisions link1="table" link2="table_extension_bottom" reason="User" />
     <disable_collisions link1="table" link2="table_extension_top" reason="User" />

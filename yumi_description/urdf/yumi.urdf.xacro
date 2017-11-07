@@ -28,16 +28,16 @@
 	</xacro:yumi_servo_gripper>
 
 
-
+        <!--
 	<xacro:property name="yumi_setup" value="$(arg yumi_setup)" />
 
 	<xacro:if value="${yumi_setup == 'robot_centric'}">
-		<!-- Pure YuMi URDF, with no joints connecting it to any other robot or pedestal. Neither accessories. -->
-	</xacro:if>
+		 Pure YuMi URDF, with no joints connecting it to any other robot or pedestal. Neither accessories. 
+	</xacro:if> -->
 
 
 
-	<xacro:if value="${yumi_setup == 'default'}">
+	<!--<xacro:if value="${yumi_setup == 'default'}">
 		<link name="world"/>
 
 		<joint name="world_to_pedestal" type="fixed">
@@ -46,7 +46,7 @@
 			<origin rpy="0 0 0" xyz="0 0 ${pedestal_height}" />
 		</joint>
 
-	</xacro:if>
+	</xacro:if> -->
 
 
 
