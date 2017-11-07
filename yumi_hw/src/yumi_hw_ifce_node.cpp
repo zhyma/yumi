@@ -117,7 +117,7 @@ int main( int argc, char** argv )
 
   /* Timer variables */
   struct timespec ts = {0, 0};
-  ros::Time last(ts.tv_sec, ts.tv_nsec), now(ts.tv_sec, ts.tv_nsec);
+  ros::Time last(ts.tv_sec, ts.tv_nsec), curr(ts.tv_sec, ts.tv_nsec), now(ts.tv_sec, ts.tv_nsec);
   ros::Duration period(1.0);
 
   /* The controller manager */
@@ -131,13 +131,13 @@ int main( int argc, char** argv )
   while( !g_quit || !ros::ok() )
   {
     // get the time / period
+    now = ros::Time::now();
     if (!clock_gettime(CLOCK_MONOTONIC, &ts))
     {
-      now = ros::Time::now();	
-      now.sec = ts.tv_sec;
-      now.nsec = ts.tv_nsec;
-      period = now - last;
-      last = now;
+      curr.sec = ts.tv_sec;
+      curr.nsec = ts.tv_nsec;
+      period = curr - last;
+      last = curr;
     } 
     else
     {
