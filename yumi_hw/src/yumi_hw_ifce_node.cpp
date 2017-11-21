@@ -94,7 +94,7 @@ int main( int argc, char** argv )
   std::string optodaq_ip_l, optodaq_ip_r;
   std::string optodaq_frame_id_l, optodaq_frame_id_r;
   yumi_nh.param("optodaq_pub_rate_hz", optodaq_pub_rate_hz, 1000.0f);
-  yumi_nh.param("optodaq_pub_rate_hz", optodaq_filter, 4);
+  yumi_nh.param("optodaq_filter", optodaq_filter, 4);
   yumi_nh.param("optodaq_cancel_bias", optodaq_cancel_bias, false);
   yumi_nh.param("optodaq_ip_l", optodaq_ip_l, std::string("192.168.125.3"));
   yumi_nh.param("optodaq_ip_r", optodaq_ip_r, std::string("192.168.125.4"));
@@ -155,7 +155,7 @@ int main( int argc, char** argv )
   ROS_INFO("  RIGHT sensor parameters:");
   ROS_INFO("    IP address: %s", optodaq_ip_r.c_str());
   ROS_INFO("--------------------------------------------------------------------------------------------------------------");
-  boost::thread ft_sensors_thread(boost::bind(&YumiHW::readFTsensors, yumi_robot));
+  // boost::thread ft_sensors_thread(boost::bind(&YumiHW::readFTsensors, yumi_robot));
 
   /* Main control loop */
   while( !g_quit )

@@ -23,13 +23,23 @@
     <arg name="ip" default="192.168.125.1"/> <!--when talking to the real robot controller -->
     <arg name="port" default="80"/>
 
+    <!-- Optoforce F/T sensor parameters -->
+    <arg name="optodaq_pub_rate_hz" default="200.0"/>
+    <arg name="optodaq_filter" default="4"/>
+    <arg name="optodaq_cancel_bias" default="false"/>
+    <arg name="optodaq_ip_l" default="192.168.125.3"/>
+    <arg name="optodaq_ip_r" default="192.168.125.4"/>
 
     <!-- The arms hardware interface -->
 	<node required="true" name="yumi_hw" pkg="yumi_hw" type="yumi_hw_ifce_node" respawn="false" ns="/yumi" output="screen"> <!--launch-prefix="xterm -e gdb - -args"-->
 		<param name="name" value="$(arg name)" />
 		<param name="ip" value="$(arg ip)"/>
+        <param name="optodaq_pub_rate_hz" value="$(arg optodaq_pub_rate_hz)"/>
+        <param name="optodaq_filter" value="$(arg optodaq_filter)"/>
+        <param name="optodaq_cancel_bias" value="$(arg optodaq_cancel_bias)"/>
+        <param name="optodaq_ip_l" value="$(arg optodaq_ip_l)"/>
+        <param name="optodaq_ip_r" value="$(arg optodaq_ip_r)"/>
 	</node>
-
 
     <!-- The grippers hardware interface -->
     <node required="true" name="yumi_gripper" pkg="yumi_hw" type="yumi_gripper_node" respawn="false" ns="/yumi" output="screen"> 
