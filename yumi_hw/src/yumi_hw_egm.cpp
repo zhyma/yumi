@@ -465,7 +465,12 @@ void YumiHWEGM::read(ros::Time time, ros::Duration period)
     {
         joint_position_prev_[j] = joint_position_[j];
         joint_position_[j] = joint_pos_[j];
-        joint_velocity_[j] = joint_vel_[j];
+
+        // Estimation of joint velocity via finite differences method of first order
+        // joint_velocity_[j] = (joint_position_[j] - joint_position_prev_[j]) / period.toSec();
+
+        // Estimation of joint velocity via finite differences method of first order and exponential smoothing
+        joint_velocity_[j] = filters::exponentialSmoothing((joint_position_[j]-joint_position_prev_[j])/period.toSec(), joint_velocity_[j], 0.04); 
     }
 
     data_buffer_mutex_.unlock();

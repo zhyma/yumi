@@ -858,4 +858,5 @@
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
+  <!-- Pure YuMi URDF, with no joints connecting it to any other robot or pedestal. Neither accessories. -->
 </robot>

@@ -6,7 +6,9 @@ sensor_msgs::JointState joints_state;
 
 std_msgs::Float64 left_command;
 std_msgs::Float64 right_command;
-
+std_msgs::Float64 left_joint_pos;
+std_msgs::Float64 right_joint_pos;
+std_msgs::Float64 sin_val;
 
 int num_joints = 14;
 int num_joints_arm = 7;
@@ -55,15 +57,15 @@ void send_sinusoidal_vel_joints()
 
 	if(sampling_elapsed.count() > sampling_period)
 	{
-		double sin_val = sine_amp * sin(sine_elapsed.count() * 2 * M_PI * sine_freq);
+		sin_val.data = sine_amp * sin(sine_elapsed.count() * 2 * M_PI * sine_freq);
 
 		vel_signal_pub.publish(sin_val);
 		cout << "Time since last joint state received = " << sine_elapsed.count() << endl;
 		// cout << "Sine value = " << sin_val << endl;
 
-		left_command.data = sin_val;
+		left_command.data = sin_val.data;
 
-		right_command.data = sin_val;
+		right_command.data = sin_val.data;
 
 		// cout << "Publishing command" << endl;
 		left_controller_pub.publish(left_command);
@@ -89,8 +91,11 @@ void joint_states_callback(const sensor_msgs::JointState &msg)
 	joints_state.velocity = msg.velocity;
 	joints_state.effort = msg.effort;
 
-	left_state_pub.publish(joints_state.position[left_joint_state_idx]);
-	right_state_pub.publish(joints_state.position[right_joint_state_idx]);
+	left_joint_pos.data = joints_state.position[left_joint_state_idx];
+	right_joint_pos.data = joints_state.position[right_joint_state_idx];
+
+	left_state_pub.publish(left_joint_pos);
+	right_state_pub.publish(right_joint_pos);
 }
 
 
