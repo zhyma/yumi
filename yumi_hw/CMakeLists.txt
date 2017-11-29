@@ -79,7 +79,7 @@ include_directories(
 ## Declare a C++ library
 add_library(${PROJECT_NAME}
   src/yumi_hw.cpp
-  src/yumi_hw_rapid.cpp
+  src/yumi_hw_rws.cpp
   src/yumi_hw_egm.cpp
 )
 

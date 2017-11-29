@@ -34,7 +34,7 @@
 
     <!-- Network parameters -->
     <arg name="ip" default="192.168.125.1"/> <!--when talking to the real robot controller -->
-    <arg name="port" default="80"/>
+    <arg name="port" default="11002"/>
 
     <!-- Optoforce F/T sensor parameters -->
     <arg name="optodaq_pub_rate_hz" default="200.0"/>

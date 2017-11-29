@@ -13,7 +13,7 @@
 #include <boost/thread.hpp>
 
 /* The Yumi EGM and RWS interfaces */
-#include "yumi_hw/yumi_hw_rapid.h"
+#include "yumi_hw/yumi_hw_rws.h"
 #include <yumi_hw/yumi_hw_egm.h>
 
 bool g_quit = false;
