@@ -13,6 +13,7 @@
 #include "simple_message/socket/tcp_client.h"
 #include <sensor_msgs/JointState.h>
 #include <std_msgs/Float64.h>
+#include <ros/time.h>
 
 #include <yumi_hw/YumiGrasp.h>
 
@@ -263,11 +264,21 @@ class YumiGripperNode
 			float left=0, right=0;
 			if(req.gripper_id == LEFT_GRIPPER) 
 			{
-				left = default_force;
+				if(req.effort <= 0)
+				   left = default_force;
+                                else if(req.effort > 20)
+				   left = 20.0;
+                                else
+				   left = req.effort;					 
 			}
 			if(req.gripper_id == RIGHT_GRIPPER) 
 			{
-				right = default_force;
+				if(req.effort <= 0)
+				   right = default_force;
+                                else if(req.effort > 20)
+				   right = 20.0;
+                                else
+				   right = req.effort;	
 			}
 
 			// std::cout << "Gripper commands (left and right):" << std::endl;
@@ -275,6 +286,7 @@ class YumiGripperNode
 			// std::cout << right << std::endl;
 
 			gripper_interface.setGripperEfforts(left,right);
+
 			return true;
 		}
 	
@@ -295,6 +307,8 @@ class YumiGripperNode
 			// std::cout << right << std::endl;
 
 			gripper_interface.setGripperEfforts(left,right);
+			ros::Duration(2, 0).sleep(); // Wait for 2 seconds and then set the gripper efforts to 0
+			gripper_interface.setGripperEfforts(0,0);
 			return true;
 		}
 
