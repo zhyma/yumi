@@ -39,4 +39,4 @@ egm:
   ramp_in_time: 0.1
 
   # Position correction gain of the EGM controller.
-  pos_corr_gain: 1.0
+  pos_corr_gain: 0.0
