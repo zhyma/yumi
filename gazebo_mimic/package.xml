@@ -20,6 +20,7 @@
   <run_depend>robot_state_publisher</run_depend>
   <run_depend>ros_control</run_depend>
   <run_depend>ros_controllers</run_depend>
+  <run_depend>roscpp</run_depend>
 
   <export>
   </export>

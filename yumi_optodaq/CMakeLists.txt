@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(yumi_optodaq)
 
+set(CMAKE_BUILD_TYPE Release)
+
 find_package(catkin REQUIRED COMPONENTS
   cmake_modules
   diagnostic_msgs
@@ -11,7 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
   roslaunch
 )
 
-find_package(Boost REQUIRED COMPONENTS system thread program_options)
+find_package(Boost REQUIRED COMPONENTS system thread program_options QUIET)
 
 
 catkin_package(

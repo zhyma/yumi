@@ -1,29 +1,21 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(gazebo_mimic)
 
-## Find catkin macros and libraries
-## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
-## is used, also find other catkin packages
-find_package(catkin REQUIRED)
-
-## System dependencies are found with CMake's conventions
-find_package(gazebo REQUIRED)
-
 set(CMAKE_CXX_FLAGS "-O3 -std=c++11")
+set(CMAKE_BUILD_TYPE Release)
+
+find_package(catkin REQUIRED)
+find_package(gazebo REQUIRED)
 
 catkin_package(
    INCLUDE_DIRS include
    LIBRARIES gazebo_mimic_plugin
-   CATKIN_DEPENDS gazebo_ros
-   DEPENDS gazebo_ros
+   CATKIN_DEPENDS roscpp
 )
 
-###########
-## Build ##
-###########
-link_directories(${GAZEBO_LIBRARY_DIRS})
+
 include_directories(include ${catkin_INCLUDE_DIRS} ${GAZEBO_INCLUDE_DIRS})
 
 add_library(gazebo_mimic_plugin src/gazebo_mimic_plugin/mimic_plugin.cpp)
 
-target_link_libraries(gazebo_mimic_plugin ${catkin_LIBRARIES} ${GAZEBO_LIBRARIES})
+target_link_libraries(gazebo_mimic_plugin ${catkin_LIBRARIES})
