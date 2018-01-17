@@ -55,6 +55,7 @@
   <run_depend>transmission_interface</run_depend>
   <run_depend>urdf</run_depend>
   <run_depend>simple_message</run_depend>
+  <run_depend>message_generation</run_depend>
   <run_depend>message_runtime</run_depend>
   <run_depend>abb_egm_interface</run_depend>
   <run_depend>abb_rws_interface</run_depend>>
