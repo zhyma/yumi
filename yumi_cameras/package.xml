@@ -12,14 +12,10 @@
 	<author>Yoshua Nava</author>
 
 	<buildtool_depend>catkin</buildtool_depend>
-	<build_depend>abb_egm_interface</build_depend>
 	<build_depend>abb_rws_interface</build_depend>
-	<build_depend>message_generation</build_depend>
-	<build_depend>simple_message</build_depend>
+	<build_depend>roscpp</build_depend>
 
-	<run_depend>abb_egm_interface</run_depend>
 	<run_depend>abb_rws_interface</run_depend>
-	<run_depend>message_runtime</run_depend>
-	<run_depend>simple_message</run_depend>
+	<run_depend>roscpp</run_depend>
 
 </package>

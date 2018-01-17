@@ -13,7 +13,10 @@
 
 /* The Yumi EGM and RWS interfaces */
 #include "yumi_hw/yumi_hw_rws.h"
-#include <yumi_hw/yumi_hw_egm.h>
+
+#ifdef HAVE_EGM
+  #include <yumi_hw/yumi_hw_egm.h>
+#endif
 
 bool g_quit = false;
 
@@ -99,19 +102,24 @@ int main( int argc, char** argv )
   }
   else
   {
+    #ifdef HAVE_EGM
       yumi_robot = new YumiHWEGM();
       YumiHWEGM* yumi_robot_egm = dynamic_cast<YumiHWEGM*>(yumi_robot);
       std::stringstream port_ss;
       port_ss << port;
       yumi_robot_egm->setup(ip, port_ss.str());
       ROS_INFO("Setting up EGM");
+    #else
+      ROS_ERROR("YuMi EGM interface not available. RobotHW node will be stopped now.");
+      return EXIT_FAILURE;
+    #endif
   }
 
   yumi_robot->create(name, urdf_string);
 
   if(!yumi_robot->init())
   {
-    ROS_FATAL_NAMED("yumi_hw","Could not initialize robot real interface");
+    ROS_FATAL_NAMED("yumi_hw","Could not initialize robot hardware interface");
     return -1;
   }
 
