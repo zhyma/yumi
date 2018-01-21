@@ -6,7 +6,6 @@ add_definitions(-DROS=1)           # build using ROS libraries
 add_definitions(-DLINUXSOCKETS=1)  # build using LINUX SOCKETS libraries 
 
 find_package(Boost REQUIRED COMPONENTS system thread QUIET)
-
 find_package(abb_egm_interface QUIET) 
 find_package(abb_rws_interface QUIET)
 LIST(APPEND CATKIN_DEPENDS_LIST 
@@ -28,28 +27,11 @@ LIST(APPEND CATKIN_DEPENDS_LIST
 )
 
 
-add_service_files(
-  FILES
-  YumiGrasp.srv
-)
- 
-generate_messages(
-  DEPENDENCIES
-  std_msgs
-)
- 
-LIST(APPEND SOURCEFILES
-  src/yumi_hw.cpp
-  src/yumi_hw_rws.cpp
-)
- 
-LIST(APPEND CATKIN_DEPENDS_LIST 
-  abb_rws_interface
-)
-
-
 if (abb_rws_interface_FOUND)
   message("--   ABB RWS library found!")
+  LIST(APPEND CATKIN_DEPENDS_LIST 
+    abb_rws_interface
+  )
   if (abb_egm_interface_FOUND)
     message("--   ABB EGM library found!")
     message("--   All dependencies satisfied. The robot hardware interfaces (via EGM and industrial core sockets) will be built")
@@ -71,13 +53,30 @@ else()
   message("--   Only the hardware interface over industrial core sockets-RWS will be built.")
 endif()
 
+
 find_package(catkin REQUIRED COMPONENTS ${CATKIN_DEPENDS_LIST})
+
+LIST(APPEND SOURCEFILES
+  src/yumi_hw.cpp
+  src/yumi_hw_rws.cpp
+)
+
+add_service_files(
+  FILES
+  YumiGrasp.srv
+)
+ 
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+)
+
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES ${PROJECT_NAME}
   CATKIN_DEPENDS ${CATKIN_DEPENDS_LIST}
 )
- 
+
 include_directories(
   include
   ${catkin_INCLUDE_DIRS}
