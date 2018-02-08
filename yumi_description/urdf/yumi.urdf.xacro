@@ -37,7 +37,6 @@
 
 
 
-	<!--<xacro:if value="${yumi_setup == 'default'}">
 		<link name="world"/>
 
 		<joint name="world_to_pedestal" type="fixed">
@@ -46,7 +45,6 @@
 			<origin rpy="0 0 0" xyz="0 0 ${pedestal_height}" />
 		</joint>
 
-	</xacro:if> -->
 
 
 
