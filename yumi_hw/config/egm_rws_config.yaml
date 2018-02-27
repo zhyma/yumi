@@ -9,7 +9,7 @@ rws:
 
 # EGM parameters, documentation taken from the RAPID module TRobEGM.sys
 egm:
-  
+
   comm_timeout: 1.0
 
   # tool and work object names,
@@ -19,11 +19,11 @@ egm:
 
   # Condition value [deg or mm] for when the EGM correction is considered
   # to be finished. E.g. for joint mode, then the condition is fulfilled when
-  # the joints are within [-MinMax, MinMax].Condition value [deg or mm] 
+  # the joints are within [-MinMax, MinMax].Condition value [deg or mm]
   # for when the EGM correction is considered to be finished. E.g. for joint mode
   # then the condition is fulfilled when the joints are within [-MinMax, MinMax].
   cond_min_max: 0.0
-  
+
   # Low pass filter bandwidth of the EGM controller [Hz].
   lp_filter: 0.0
 
@@ -39,4 +39,4 @@ egm:
   ramp_in_time: 0.1
 
   # Position correction gain of the EGM controller.
-  pos_corr_gain: 1.0
+  pos_corr_gain: 0.0
