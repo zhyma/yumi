@@ -131,7 +131,7 @@ bool YumiEGMInterface::init(const std::string& ip, const std::string& port)
     CURLcode curl_code = curl_global_init(CURL_GLOBAL_DEFAULT);
 
     if(!curl_code == CURLE_OK)
-    { 
+    {
         return false;
     }
 
@@ -145,7 +145,7 @@ bool YumiEGMInterface::init(const std::string& ip, const std::string& port)
         return false;
     }
 
-    if(!startEGM()) 
+    if(!startEGM())
     {
         return false;
     }
@@ -155,7 +155,7 @@ bool YumiEGMInterface::init(const std::string& ip, const std::string& port)
 
 bool YumiEGMInterface::stop()
 {
-    if(!stopEGM()) 
+    if(!stopEGM())
     {
         return false;
     }
@@ -198,7 +198,7 @@ void YumiEGMInterface::initEGMJointSpaceMessage(proto::JointSpace *joint_space_m
 void YumiEGMInterface::initEGMJointStateMessage(google::protobuf::RepeatedField<double> *joint_states, google::protobuf::RepeatedField<double> *external_joint_states)
 {
     joint_states->Clear();
-    for (unsigned int i = 0; i < 6; ++i) 
+    for (unsigned int i = 0; i < 6; ++i)
     {
         joint_states->Add(0.0);
     }
@@ -268,7 +268,7 @@ bool YumiEGMInterface::initRWS()
 
     ros::Duration(rws_delay_time_).sleep();
 
-    if(!sendEGMParams()) 
+    if(!sendEGMParams())
     {
         return false;
     }
@@ -343,7 +343,7 @@ void YumiEGMInterface::configureEGM(boost::shared_ptr<EGMInterfaceDefault> egm_i
     configuration.basic.axes = EGMInterfaceConfiguration::Seven;
     configuration.basic.execution_mode = EGMInterfaceConfiguration::Direct;
     configuration.communication.use_speed = true;
-    configuration.logging.use_logging = true;
+    configuration.logging.use_logging = false;
 
     egm_interface->setConfiguration(configuration);
 }
@@ -432,15 +432,15 @@ void YumiHWEGM::setup(const std::string& ip, const std::string& port)
 
 bool YumiHWEGM::init()
 {
-    if(is_initialized_) 
+    if(is_initialized_)
     {
         return false;
     }
     //current_strategy_ = JOINT_VELOCITY;
 
     bool success = yumi_egm_interface_.init(ip_, port_);
-    
-    if(!success) 
+
+    if(!success)
     {
         return false;
     }
@@ -450,10 +450,10 @@ bool YumiHWEGM::init()
 }
 
 
-void YumiHWEGM::read(ros::Time time, ros::Duration period) 
+void YumiHWEGM::read(ros::Time time, ros::Duration period)
 {
-    if(!is_initialized_) 
-    { 
+    if(!is_initialized_)
+    {
         return;
     }
 
@@ -470,7 +470,7 @@ void YumiHWEGM::read(ros::Time time, ros::Duration period)
         // joint_velocity_[j] = (joint_position_[j] - joint_position_prev_[j]) / period.toSec();
 
         // Estimation of joint velocity via finite differences method of first order and exponential smoothing
-        joint_velocity_[j] = filters::exponentialSmoothing((joint_position_[j]-joint_position_prev_[j])/period.toSec(), joint_velocity_[j], 0.04); 
+        joint_velocity_[j] = filters::exponentialSmoothing((joint_position_[j]-joint_position_prev_[j])/period.toSec(), joint_velocity_[j], exponential_smoothing_alpha_); 
     }
 
     data_buffer_mutex_.unlock();
@@ -479,8 +479,8 @@ void YumiHWEGM::read(ros::Time time, ros::Duration period)
 
 void YumiHWEGM::write(ros::Time time, ros::Duration period)
 {
-    if(!is_initialized_) 
-    { 
+    if(!is_initialized_)
+    {
         return;
     }
 

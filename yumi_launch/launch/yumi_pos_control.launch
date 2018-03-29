@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
-<launch> 
+<launch>
 
 	<arg name="name" default="yumi" doc="The robot name. Ensure this is the same name you give to the arm in the urdf instance."/>
-	
+
 	<rosparam file="$(find yumi_control)/config/position_controllers.yaml" command="load" ns="/yumi"/>
 	<rosparam file="$(find yumi_control)/config/ft_sensors_controllers.yaml" command="load" ns="/yumi"/>
-	<arg name="arm_controllers" default="joint_state_controller 
+	<arg name="arm_controllers" default="joint_state_controller
 									 joint_pos_controller_1_r
 									 joint_pos_controller_2_r
 									 joint_pos_controller_7_r
@@ -23,7 +23,7 @@
 									 force_torque_sensor_controller"/>
     <node name="arm_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="$(arg arm_controllers)" ns="/yumi"/>
 
-	<!--  Hardware interfaces for the joints and grippers -->    
+	<!--  Hardware interfaces for the joints and grippers -->
     <arg name="arms_hardware_interface" default="PositionJointInterface"/>
     <arg name="grippers_hardware_interface" default="EffortJointInterface"/>
 
@@ -43,6 +43,9 @@
     <arg name="optodaq_ip_l" default="192.168.125.3"/>
     <arg name="optodaq_ip_r" default="192.168.125.4"/>
 
+		<!-- Velocity estimate smoothing -->
+		<arg name="exponential_smoothing_alpha" default="0.04"/>
+
     <!-- The arms hardware interface -->
 	<node required="true" name="yumi_hw" pkg="yumi_hw" type="yumi_hw_ifce_node" respawn="false" ns="/yumi" output="screen"> <!--launch-prefix="xterm -e gdb - -args"-->
 		<param name="name" value="$(arg name)" />
@@ -52,10 +55,11 @@
         <param name="optodaq_cancel_bias" value="$(arg optodaq_cancel_bias)"/>
         <param name="optodaq_ip_l" value="$(arg optodaq_ip_l)"/>
         <param name="optodaq_ip_r" value="$(arg optodaq_ip_r)"/>
+				<param name="exponential_smoothing_alpha" value="$(arg exponential_smoothing_alpha)"/>
 	</node>
 
 	<!-- The grippers hardware interface -->
-    <node required="true" name="yumi_gripper" pkg="yumi_hw" type="yumi_gripper_node" respawn="false" ns="/yumi" output="screen"> 
+    <node required="true" name="yumi_gripper" pkg="yumi_hw" type="yumi_gripper_node" respawn="false" ns="/yumi" output="screen">
         <param name="ip" value="$(arg ip)"/>
     </node>
 
@@ -70,4 +74,3 @@
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(find yumi_description)/yumi.rviz"/>
 
 </launch>
-

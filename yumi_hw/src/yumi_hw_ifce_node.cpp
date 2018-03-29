@@ -94,6 +94,7 @@ int main( int argc, char** argv )
   float optodaq_pub_rate_hz;
   int optodaq_filter;
   bool optodaq_cancel_bias;
+  double exponential_smoothing_alpha;
   std::string optodaq_ip_l, optodaq_ip_r;
   std::string optodaq_frame_id_l, optodaq_frame_id_r;
   yumi_nh.param("optodaq_pub_rate_hz", optodaq_pub_rate_hz, 1000.0f);
@@ -101,6 +102,7 @@ int main( int argc, char** argv )
   yumi_nh.param("optodaq_cancel_bias", optodaq_cancel_bias, false);
   yumi_nh.param("optodaq_ip_l", optodaq_ip_l, std::string("192.168.125.3"));
   yumi_nh.param("optodaq_ip_r", optodaq_ip_r, std::string("192.168.125.4"));
+  yumi_nh.param("exponential_smoothing_alpha", exponential_smoothing_alpha, 1.0);
 
   YumiHW* yumi_robot;
 
@@ -176,7 +178,7 @@ int main( int argc, char** argv )
       curr.nsec = ts.tv_nsec;
       period = curr - last;
       last = curr;
-    } 
+    }
     else
     {
       ROS_FATAL("Failed to poll realtime clock!");
@@ -186,7 +188,7 @@ int main( int argc, char** argv )
     /* Read the state from YuMi */
     yumi_robot->read(now, period);
     yumi_robot->readFTsensors();
-    
+
     /* Update the controllers */
     manager.update(now, period);
 

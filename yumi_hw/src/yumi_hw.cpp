@@ -18,7 +18,7 @@ void YumiHW::create(std::string name, std::string urdf_string)
     joint_names_.push_back( robot_namespace_ + std::string("_joint_5_l") );
     joint_names_.push_back( robot_namespace_ + std::string("_joint_6_l") );
     joint_names_.push_back( robot_namespace_ + std::string("_joint_7_l") );
-    
+
     joint_names_.push_back( robot_namespace_ + std::string("_joint_1_r") );
     joint_names_.push_back( robot_namespace_ + std::string("_joint_2_r") );
     joint_names_.push_back( robot_namespace_ + std::string("_joint_3_r") );
@@ -26,7 +26,7 @@ void YumiHW::create(std::string name, std::string urdf_string)
     joint_names_.push_back( robot_namespace_ + std::string("_joint_5_r") );
     joint_names_.push_back( robot_namespace_ + std::string("_joint_6_r") );
     joint_names_.push_back( robot_namespace_ + std::string("_joint_7_r") );
-    
+
     /* VARIABLES */
     joint_position_.resize(n_joints_);
     joint_position_prev_.resize(n_joints_);
@@ -158,7 +158,7 @@ void YumiHW::registerInterfaces(const urdf::Model *const urdf_model, std::vector
     //registerInterface(&effort_interface_);
     registerInterface(&position_interface_);
 	registerInterface(&velocity_interface_);
-	
+
 	// Initialize F/T values
 	for(int j=0; j < 3; j++)
 	{
@@ -268,7 +268,7 @@ bool YumiHW::parseTransmissionsFromURDF(const std::string& urdf_string)
 	{
 		return false;
 	}
-	
+
 
     return true;
 }
@@ -328,7 +328,7 @@ void YumiHW::doSwitch(const std::list<hardware_interface::ControllerInfo> &start
     {
 #if ROS_VERSION_MINIMUM(1,12,0)
 	    //jade and kinetic
-	    for(int i=0; i<it->claimed_resources.size(); i++) 
+	    for(int i=0; i<it->claimed_resources.size(); i++)
 		{
 			if( it->claimed_resources[i].hardware_interface.compare( std::string("hardware_interface::PositionJointInterface") ) == 0 )
 			{
@@ -339,10 +339,10 @@ void YumiHW::doSwitch(const std::list<hardware_interface::ControllerInfo> &start
 			{
 				ROS_INFO("Request to switch to hardware_interface::VelocityJointInterface (JOINT_VELOCITY)");
 				wantsVelocity = true;
-			} 
+			}
 			else
 			{
-				ROS_INFO("Controller of type %s, requested interface of type %s. Impossible, sorry.\n", 
+				ROS_INFO("Controller of type %s, requested interface of type %s. Impossible, sorry.\n",
 					it->type.c_str(), it->claimed_resources[i].hardware_interface.c_str());
 			}
 	    }
@@ -363,8 +363,8 @@ void YumiHW::doSwitch(const std::list<hardware_interface::ControllerInfo> &start
 	    }
 #endif
     }
-    if(wantsPosition) 
-	{		
+    if(wantsPosition)
+	{
 		desired_strategy = JOINT_POSITION;
     }
     if(wantsVelocity)
@@ -372,7 +372,7 @@ void YumiHW::doSwitch(const std::list<hardware_interface::ControllerInfo> &start
 		desired_strategy = JOINT_VELOCITY;
     }
 
-    if(wantsPosition && wantsVelocity) 
+    if(wantsPosition && wantsVelocity)
 	{
 		ROS_ERROR("Cannot have both position and velocity interface. Will assume Velocity. Beware!");
     }
@@ -423,7 +423,7 @@ void YumiHW::readFTsensors()
 	if (etherdaq_driver_l->waitForNewData())
 	{
 		ft_data_mutex_l_.lock();
-		etherdaq_driver_l->getData(optodaq_data_l);			
+		etherdaq_driver_l->getData(optodaq_data_l);
 		robot_force_l_[0] = optodaq_data_l.wrench.force.x;
 		robot_force_l_[1] = optodaq_data_l.wrench.force.y;
 		robot_force_l_[2] = optodaq_data_l.wrench.force.z;
