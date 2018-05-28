@@ -410,7 +410,7 @@
       <child link="${name}_link_4_l"/>
       <origin xyz="-0.04188 0.0 0.07873" rpy="${PI / 2} -${PI / 2} 0.0"/>
       <axis xyz="0 0 1"/>
-      <limit lower="${-115.5 * PI / 180}" upper="${70 * PI / 180}"
+      <limit lower="${-113.5 * PI / 180}" upper="${70 * PI / 180}"
              effort="${max_effort}" velocity="${180 * PI / 180}" />
       <dynamics damping="${joint_damping}"/>
     </joint>
@@ -480,7 +480,7 @@
       <child link="${name}_link_6_l"/>
       <origin xyz="-0.027 0 0.10039" rpy="${PI / 2} 0.0 0.0"/>
       <axis xyz="0 0 1"/>
-      <limit lower="${-80 * PI / 180}" upper="${128 * PI / 180}"
+      <limit lower="${-78 * PI / 180}" upper="${128 * PI / 180}"
              effort="${max_effort}" velocity="${400 * PI / 180}" />
       <dynamics damping="${joint_damping}"/>
     </joint>
