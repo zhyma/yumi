@@ -9,6 +9,8 @@
   <!-- some constants -->
   <xacro:property name="joint_damping" value="0.5" />
   <xacro:property name="max_effort" value="300"/>
+  <!-- Yumi body has tiled back by ~1-2deg (-0.0175 to -0.035 rad) -->
+  <xacro:property name="yumi_body_tilt" value="-0.0175"/>
  
   <xacro:macro name="yumi" params="parent name hardware_interface *origin">
 
@@ -17,7 +19,7 @@
     <joint name="${name}_base_link_to_body" type="fixed">
       <parent link="yumi_base_link"/>
       <child link="${name}_body"/>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <origin xyz="0 0 0" rpy="0 ${yumi_body_tilt} 0"/>
     </joint>
 
 

@@ -33,7 +33,7 @@
     <end_effector name="left_gripper_ee" parent_link="yumi_link_7_l" group="left_gripper" parent_group="left_arm" />
     <end_effector name="right_gripper_ee" parent_link="yumi_link_7_r" group="right_gripper" parent_group="right_arm" />
     <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->
-    <virtual_joint name="root" type="fixed" parent_frame="yumi_body" child_link="yumi_pedestal" />
+    <virtual_joint name="root" type="fixed" parent_frame="yumi_body" child_link="world" />
     <!--PASSIVE JOINT: Purpose: this element is used to mark joints that are not actuated-->
     <passive_joint name="gripper_l_joint_m" />
     <passive_joint name="gripper_r_joint_m" />

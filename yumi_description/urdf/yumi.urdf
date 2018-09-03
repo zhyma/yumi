@@ -34,6 +34,10 @@
   <material name="White">
     <color rgba="1.0 1.0 1.0 1.0"/>
   </material>
+  <!-- For yumi_finger_for_optoforce.stl -->
+  <!-- xacro:property name="finger_scale" value="0.001" / -->
+  <!-- xacro:property name="finger_offset_y" value="0.008" / -->
+  <!-- xacro:property name="finger_offset_z" value="-0.005" / -->
   <gazebo>
     <plugin filename="libgazebo_ros_control.so" name="gazebo_ros_controller">
       <robotNamespace>/yumi</robotNamespace>
@@ -43,7 +47,7 @@
   <joint name="yumi_base_link_to_body" type="fixed">
     <parent link="yumi_base_link"/>
     <child link="yumi_body"/>
-    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <origin rpy="0 -0.0175 0" xyz="0 0 0"/>
   </joint>
   <link name="yumi_body">
     <inertial>
@@ -672,21 +676,21 @@
   </joint>
   <link name="gripper_r_finger_r">
     <inertial>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <mass value="0.01"/>
-      <inertia ixx="0.000001" ixy="0" ixz="0" iyy="0.000001" iyz="0" izz="0.000001"/>
+      <mass value="0.1"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="4.16666666667e-05" ixy="0.0" ixz="0.0" iyy="4.16666666667e-05" iyz="0.0" izz="4.16666666667e-05"/>
     </inertial>
     <visual>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 0" xyz="0 0 -0.005"/>
       <geometry>
-        <mesh filename="package://yumi_description/meshes/gripper/finger.stl"/>
+        <mesh filename="package://yumi_description/meshes/gripper/coarse/brown_finger.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Blue"/>
     </visual>
     <collision>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 0" xyz="0 0 -0.005"/>
       <geometry>
-        <mesh filename="package://yumi_description/meshes/gripper/coarse/finger.stl"/>
+        <mesh filename="package://yumi_description/meshes/gripper/coarse/brown_finger.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Blue"/>
     </collision>
@@ -703,21 +707,21 @@
   </joint>
   <link name="gripper_r_finger_l">
     <inertial>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <mass value="0.01"/>
-      <inertia ixx="0.000001" ixy="0" ixz="0" iyy="0.000001" iyz="0" izz="0.000001"/>
+      <mass value="0.1"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="4.16666666667e-05" ixy="0.0" ixz="0.0" iyy="4.16666666667e-05" iyz="0.0" izz="4.16666666667e-05"/>
     </inertial>
     <visual>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 0" xyz="0 0 -0.005"/>
       <geometry>
-        <mesh filename="package://yumi_description/meshes/gripper/finger.stl"/>
+        <mesh filename="package://yumi_description/meshes/gripper/coarse/brown_finger.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Blue"/>
     </visual>
     <collision>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 0" xyz="0 0 -0.005"/>
       <geometry>
-        <mesh filename="package://yumi_description/meshes/gripper/coarse/finger.stl"/>
+        <mesh filename="package://yumi_description/meshes/gripper/coarse/brown_finger.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Blue"/>
     </collision>
@@ -784,21 +788,21 @@
   </joint>
   <link name="gripper_l_finger_r">
     <inertial>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <mass value="0.01"/>
-      <inertia ixx="0.000001" ixy="0" ixz="0" iyy="0.000001" iyz="0" izz="0.000001"/>
+      <mass value="0.1"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="4.16666666667e-05" ixy="0.0" ixz="0.0" iyy="4.16666666667e-05" iyz="0.0" izz="4.16666666667e-05"/>
     </inertial>
     <visual>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 0" xyz="0 0 -0.005"/>
       <geometry>
-        <mesh filename="package://yumi_description/meshes/gripper/finger.stl"/>
+        <mesh filename="package://yumi_description/meshes/gripper/coarse/brown_finger.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Blue"/>
     </visual>
     <collision>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 0" xyz="0 0 -0.005"/>
       <geometry>
-        <mesh filename="package://yumi_description/meshes/gripper/coarse/finger.stl"/>
+        <mesh filename="package://yumi_description/meshes/gripper/coarse/brown_finger.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Blue"/>
     </collision>
@@ -815,21 +819,21 @@
   </joint>
   <link name="gripper_l_finger_l">
     <inertial>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <mass value="0.01"/>
-      <inertia ixx="0.000001" ixy="0" ixz="0" iyy="0.000001" iyz="0" izz="0.000001"/>
+      <mass value="0.1"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="4.16666666667e-05" ixy="0.0" ixz="0.0" iyy="4.16666666667e-05" iyz="0.0" izz="4.16666666667e-05"/>
     </inertial>
     <visual>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 0" xyz="0 0 -0.005"/>
       <geometry>
-        <mesh filename="package://yumi_description/meshes/gripper/finger.stl"/>
+        <mesh filename="package://yumi_description/meshes/gripper/coarse/brown_finger.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Blue"/>
     </visual>
     <collision>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 0" xyz="0 0 -0.005"/>
       <geometry>
-        <mesh filename="package://yumi_description/meshes/gripper/coarse/finger.stl"/>
+        <mesh filename="package://yumi_description/meshes/gripper/coarse/brown_finger.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Blue"/>
     </collision>
@@ -862,18 +866,14 @@
 	<xacro:property name="yumi_setup" value="$(arg yumi_setup)" />
 
 	<xacro:if value="${yumi_setup == 'robot_centric'}">
-		 Pure YuMi URDF, with no joints connecting it to any other robot or pedestal. Neither accessories. 
+		 Pure YuMi URDF, with no joints connecting it to any other robot or pedestal. Neither accessories.
 	</xacro:if> -->
-  <!--<xacro:if value="${yumi_setup == 'default'}">
-		<link name="world"/>
-
-		<joint name="world_to_pedestal" type="fixed">
-			<parent link="world" />
-			<child link="yumi_pedestal" />
-			<origin rpy="0 0 0" xyz="0 0 ${pedestal_height}" />
-		</joint>
-
-	</xacro:if> -->
+  <link name="world"/>
+  <joint name="world_to_pedestal" type="fixed">
+    <parent link="world"/>
+    <child link="yumi_pedestal"/>
+    <origin rpy="0 0 0" xyz="0 0 0.92"/>
+  </joint>
   <link name="yumi_pedestal">
     <visual>
       <origin rpy="-1.57079632679 0 3.14159265359" xyz="0 0 0"/>
@@ -928,6 +928,7 @@
   <joint name="table_extension_bottom_to_top" type="fixed">
     <parent link="table_extension_bottom"/>
     <child link="table_extension_top"/>
+    <!-- origin rpy="0 0 0" xyz="0 0 0.005" / -->
     <origin rpy="0 0 0" xyz="0 0 0.005"/>
   </joint>
   <link name="table_extension_top">
@@ -949,12 +950,13 @@
   <joint name="pedestal_to_yumi" type="fixed">
     <parent link="yumi_pedestal"/>
     <child link="yumi_base_link"/>
-    <origin rpy="0 0 0" xyz="0.0 0 0.05"/>
+    <origin rpy="0 0 0" xyz="0.0 0 0.04"/>
   </joint>
   <link name="kinect2_link">
     <visual>
       <origin rpy="1.57079632679 0 0" xyz="0 0 0"/>
       <geometry>
+        <!-- mesh scale="0.001 0.001 0.001" filename="package://yumi_description/meshes/accesories/KinectXboxOne.stl"/ -->
         <mesh filename="package://yumi_description/meshes/accesories/KinectXboxOne.stl" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="Black"/>
@@ -967,6 +969,22 @@
 	    <material name="Black" />
 	  </collision> -->
   </link>
+  <!-- <link name="kinectp_link">
+	  <visual>
+	    <origin xyz="0 0 0" rpy="${PI/2} 0 0" />
+	    <geometry>
+	     <mesh scale="0.001 0.001 0.001" filename="package://yumi_description/meshes/accesories/KinectXboxOne.stl"/>
+	    </geometry>
+	    <material name="Black" />
+	  </visual>
+	  <collision>
+	    <origin xyz="0 0 0" rpy="0 0 0" />
+	    <geometry>
+	      <mesh scale="0.001 0.001 0.001" filename="package://yumi_description/meshes/accesories/KinectXboxOne.stl"/>
+	    </geometry>
+	    <material name="Black" />
+	  </collision>
+	</link> -->
   <link name="middle_kinect_base">
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
@@ -986,10 +1004,11 @@
   <joint name="yumi_to_middle_kinect_base" type="fixed">
     <parent link="yumi_base_link"/>
     <child link="middle_kinect_base"/>
-    <origin rpy="0 -1.09955742876 0" xyz="0.00 0 0.73"/>
+    <origin rpy="0 -0.911061869541 0" xyz="0.10 0 0.71"/>
+    <!-- origin rpy="0 ${-0.7*PI/2} 0" xyz="0.00 0 0.73" / -->
   </joint>
   <link name="kinect2_rotation">
-          </link>
+    </link>
   <!--<joint name="kinect2_to_kinect2_link" type="fixed">
 	  <parent link="kinect2" />
 	  <child link="kinect2_link" />
@@ -1003,6 +1022,12 @@
   <joint name="middle_kinect_base_to_kinect2" type="fixed">
     <parent link="yumi_base_link"/>
     <child link="kinect2_rotation"/>
-    <origin rpy="0.0 2.4426 0.0" xyz="0.14 -0.06 0.92"/>
+    <!-- origin rpy="0.0 2.4426 0.0" xyz="0.14 -0.06 0.92" / -->
+    <origin rpy="0.0 2.4426 0.0" xyz="0.27 0 0.81"/>
   </joint>
+  <!--	<joint name="yumi_base_link_to_kinectp_link" type="fixed">
+	  <parent link="yumi_base_link" />
+	  <child link="kinectp_link" />
+	  <origin rpy="-2.99236 0.04977 -1.55351" xyz="0.227 0.014 0.7065" />
+	</joint> -->
 </robot>
