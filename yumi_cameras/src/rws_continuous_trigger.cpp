@@ -31,7 +31,7 @@
 
 
 #include <yumi_cameras/yumi_cameras_rws.h>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <ros/ros.h>
 #include <abb_rws_interface/rws_interface_yumi.h>
 
@@ -40,7 +40,7 @@ using namespace abb::rws_interface;
 
 
 // RWS interface which uses TCP communication for starting the EGM joint mode on YuMi
-boost::shared_ptr<RWSInterfaceYuMi> rws_interface_;
+std::shared_ptr<RWSInterfaceYuMi> rws_interface_;
 
 // RWS connection parameters
 std::string rws_ip_, rws_port_;

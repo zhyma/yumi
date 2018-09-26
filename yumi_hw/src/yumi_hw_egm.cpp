@@ -29,19 +29,15 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 #include <yumi_hw/yumi_hw_egm.h>
 #include <abb_egm_interface/egm_common.h>
 #include <ros/ros.h>
 #include <curl/curl.h>
 
-
 using namespace abb::egm_interface;
 using namespace abb::rws_interface;
 
-
-YumiEGMInterface::YumiEGMInterface() :
-    has_params_(false), rws_connection_ready_(false)
+YumiEGMInterface::YumiEGMInterface() : has_params_(false), rws_connection_ready_(false)
 {
     left_arm_feedback_.reset(new proto::Feedback());
     left_arm_status_.reset(new proto::RobotStatus());
@@ -59,13 +55,10 @@ YumiEGMInterface::YumiEGMInterface() :
     initEGMJointStateMessage(right_arm_joint_vel_targets_->mutable_speed(), right_arm_joint_vel_targets_->mutable_external_speed());
 
     getParams();
-
 }
-
 
 YumiEGMInterface::~YumiEGMInterface()
 {
-
 }
 
 void YumiEGMInterface::getParams()
@@ -79,7 +72,6 @@ void YumiEGMInterface::getParams()
     double timeout;
     nh.param("egm/comm_timeout", timeout, 30.0);
     egm_params_.setCommTimeout(timeout);
-
 
     std::string tool_name;
     nh.param("egm/tool_name", tool_name, std::string("tool0"));
@@ -116,8 +108,7 @@ void YumiEGMInterface::getParams()
     has_params_ = true;
 }
 
-
-bool YumiEGMInterface::init(const std::string& ip, const std::string& port)
+bool YumiEGMInterface::init(const std::string &ip, const std::string &port)
 {
     if (!has_params_)
     {
@@ -130,12 +121,12 @@ bool YumiEGMInterface::init(const std::string& ip, const std::string& port)
 
     CURLcode curl_code = curl_global_init(CURL_GLOBAL_DEFAULT);
 
-    if(!curl_code == CURLE_OK)
-    { 
+    if (!curl_code == CURLE_OK)
+    {
         return false;
     }
 
-    if(!initRWS())
+    if (!initRWS())
     {
         return false;
     }
@@ -145,7 +136,7 @@ bool YumiEGMInterface::init(const std::string& ip, const std::string& port)
         return false;
     }
 
-    if(!startEGM()) 
+    if (!startEGM())
     {
         return false;
     }
@@ -155,7 +146,7 @@ bool YumiEGMInterface::init(const std::string& ip, const std::string& port)
 
 bool YumiEGMInterface::stop()
 {
-    if(!stopEGM()) 
+    if (!stopEGM())
     {
         return false;
     }
@@ -198,7 +189,7 @@ void YumiEGMInterface::initEGMJointSpaceMessage(proto::JointSpace *joint_space_m
 void YumiEGMInterface::initEGMJointStateMessage(google::protobuf::RepeatedField<double> *joint_states, google::protobuf::RepeatedField<double> *external_joint_states)
 {
     joint_states->Clear();
-    for (unsigned int i = 0; i < 6; ++i) 
+    for (unsigned int i = 0; i < 6; ++i)
     {
         joint_states->Add(0.0);
     }
@@ -208,40 +199,39 @@ void YumiEGMInterface::initEGMJointStateMessage(google::protobuf::RepeatedField<
 }
 
 void YumiEGMInterface::copyEGMJointStateToArray(const google::protobuf::RepeatedField<double> &joint_states,
-                                                     const google::protobuf::RepeatedField<double> &external_joint_states,
-                                                     float* joint_array) const
+                                                const google::protobuf::RepeatedField<double> &external_joint_states,
+                                                float *joint_array) const
 {
-    joint_array[0] = (float)joint_states.Get(0)*M_PI/180.0;
-    joint_array[1] = (float)joint_states.Get(1)*M_PI/180.0;
-    joint_array[2] = (float)joint_states.Get(3)*M_PI/180.0;
-    joint_array[3] = (float)joint_states.Get(4)*M_PI/180.0;
-    joint_array[4] = (float)joint_states.Get(5)*M_PI/180.0;
-    joint_array[5] = (float)external_joint_states.Get(0)*M_PI/180.0;
-    joint_array[6] = (float)joint_states.Get(2)*M_PI/180.0;
+    joint_array[0] = (float)joint_states.Get(0) * M_PI / 180.0;
+    joint_array[1] = (float)joint_states.Get(1) * M_PI / 180.0;
+    joint_array[2] = (float)joint_states.Get(3) * M_PI / 180.0;
+    joint_array[3] = (float)joint_states.Get(4) * M_PI / 180.0;
+    joint_array[4] = (float)joint_states.Get(5) * M_PI / 180.0;
+    joint_array[5] = (float)external_joint_states.Get(0) * M_PI / 180.0;
+    joint_array[6] = (float)joint_states.Get(2) * M_PI / 180.0;
 
     // std::cout << "joint 4 " << joint_array[4] << std::endl;
 }
 
 void YumiEGMInterface::copyEGMJointSpaceToArray(const proto::JointSpace &joint_space,
-                                                     float* joint_pos, float* joint_vel, float* joint_acc ) const
+                                                float *joint_pos, float *joint_vel, float *joint_acc) const
 {
     copyEGMJointStateToArray(joint_space.position(), joint_space.external_position(), joint_pos);
     copyEGMJointStateToArray(joint_space.speed(), joint_space.external_speed(), joint_vel);
     copyEGMJointStateToArray(joint_space.acceleration(), joint_space.external_acceleration(), joint_acc);
 }
 
-
-void YumiEGMInterface::copyArrayToEGMJointState(const float* joint_array,
-                                                google::protobuf::RepeatedField<double>* joint_states,
-                                                google::protobuf::RepeatedField<double>* external_joint_states) const
+void YumiEGMInterface::copyArrayToEGMJointState(const float *joint_array,
+                                                google::protobuf::RepeatedField<double> *joint_states,
+                                                google::protobuf::RepeatedField<double> *external_joint_states) const
 {
-    joint_states->Set(0, (double) joint_array[0]*180.0/M_PI);
-    joint_states->Set(1, (double) joint_array[1]*180.0/M_PI);
-    joint_states->Set(2, (double) joint_array[6]*180.0/M_PI);
-    joint_states->Set(3, (double) joint_array[2]*180.0/M_PI);
-    joint_states->Set(4, (double) joint_array[3]*180.0/M_PI);
-    joint_states->Set(5, (double) joint_array[4]*180.0/M_PI);
-    external_joint_states->Set(0, (double) joint_array[5]*180.0/M_PI);
+    joint_states->Set(0, (double)joint_array[0] * 180.0 / M_PI);
+    joint_states->Set(1, (double)joint_array[1] * 180.0 / M_PI);
+    joint_states->Set(2, (double)joint_array[6] * 180.0 / M_PI);
+    joint_states->Set(3, (double)joint_array[2] * 180.0 / M_PI);
+    joint_states->Set(4, (double)joint_array[3] * 180.0 / M_PI);
+    joint_states->Set(5, (double)joint_array[4] * 180.0 / M_PI);
+    external_joint_states->Set(0, (double)joint_array[5] * 180.0 / M_PI);
 }
 
 bool YumiEGMInterface::initRWS()
@@ -252,7 +242,7 @@ bool YumiEGMInterface::initRWS()
     ros::Duration(rws_delay_time_).sleep();
 
     // Check that RAPID is running on the robot and that robot is in AUTO mode
-    if(!rws_interface_->isRAPIDRunning())
+    if (!rws_interface_->isRAPIDRunning())
     {
         ROS_ERROR_STREAM(ros::this_node::getName() << ": robot unavailable, make sure that the RAPID program is running on the flexpendant.");
         return false;
@@ -260,7 +250,7 @@ bool YumiEGMInterface::initRWS()
 
     ros::Duration(rws_delay_time_).sleep();
 
-    if(!rws_interface_->isModeAuto())
+    if (!rws_interface_->isModeAuto())
     {
         ROS_ERROR_STREAM(ros::this_node::getName() << ": robot unavailable, make sure to set the robot to AUTO mode on the flexpendant.");
         return false;
@@ -268,7 +258,7 @@ bool YumiEGMInterface::initRWS()
 
     ros::Duration(rws_delay_time_).sleep();
 
-    if(!sendEGMParams()) 
+    if (!sendEGMParams())
     {
         return false;
     }
@@ -292,7 +282,7 @@ bool YumiEGMInterface::initEGM()
     configureEGM(right_arm_egm_interface_);
 
     // create threads for EGM communication
-    for(size_t i = 0; i < MAX_NUMBER_OF_EGM_CONNECTIONS; i++)
+    for (size_t i = 0; i < MAX_NUMBER_OF_EGM_CONNECTIONS; i++)
     {
         io_service_threads_.create_thread(boost::bind(&boost::asio::io_service::run, &io_service_));
     }
@@ -304,7 +294,7 @@ bool YumiEGMInterface::sendEGMParams()
 {
     DualEGMData dual_egm_data;
 
-    if(!rws_interface_->getData(&dual_egm_data))
+    if (!rws_interface_->getData(&dual_egm_data))
     {
         ROS_ERROR_STREAM(ros::this_node::getName() << ": robot unavailable, make sure to set the robot to AUTO mode on the flexpendant.");
         return false;
@@ -320,7 +310,7 @@ bool YumiEGMInterface::sendEGMParams()
     return true;
 }
 
-void YumiEGMInterface::setEGMParams(EGMData* egm_data)
+void YumiEGMInterface::setEGMParams(EGMData *egm_data)
 {
     egm_data->setCommTimeout(egm_params_.getCommTimeout());
     egm_data->setToolName(egm_params_.getToolName());
@@ -333,9 +323,7 @@ void YumiEGMInterface::setEGMParams(EGMData* egm_data)
     egm_data->setPosCorrGain(egm_params_.getPosCorrGain());
 }
 
-
-
-void YumiEGMInterface::configureEGM(boost::shared_ptr<EGMInterfaceDefault> egm_interface)
+void YumiEGMInterface::configureEGM(std::shared_ptr<EGMInterfaceDefault> egm_interface)
 {
     EGMInterfaceConfiguration configuration = egm_interface->getConfiguration();
 
@@ -352,15 +340,14 @@ bool YumiEGMInterface::startEGM()
 {
     bool egm_started = false;
 
-    if(rws_interface_ && rws_connection_ready_)
+    if (rws_interface_ && rws_connection_ready_)
     {
-        for(int i = 0; i < rws_max_signal_retries_ && !egm_started; ++i)
+        for (int i = 0; i < rws_max_signal_retries_ && !egm_started; ++i)
         {
             egm_started = rws_interface_->doEGMStartJoint();
-            if(!egm_started)
+            if (!egm_started)
             {
-                ROS_ERROR_STREAM(ros::this_node::getName() << ": failed to send EGM start signal! [Attempt " << i+1 << "/" <<
-                                rws_max_signal_retries_<< "]");
+                ROS_ERROR_STREAM(ros::this_node::getName() << ": failed to send EGM start signal! [Attempt " << i + 1 << "/" << rws_max_signal_retries_ << "]");
             }
         }
     }
@@ -372,15 +359,14 @@ bool YumiEGMInterface::stopEGM()
 {
     bool egm_stopped = false;
 
-    if(rws_interface_ && rws_connection_ready_)
+    if (rws_interface_ && rws_connection_ready_)
     {
-        for(int i = 0; i < rws_max_signal_retries_ && !egm_stopped; ++i)
+        for (int i = 0; i < rws_max_signal_retries_ && !egm_stopped; ++i)
         {
             egm_stopped = rws_interface_->doEGMStop();
-            if(!egm_stopped)
+            if (!egm_stopped)
             {
-                ROS_ERROR_STREAM(ros::this_node::getName() << ": failed to send EGM stop signal! [Attempt " << i+1 << "/" <<
-                                rws_max_signal_retries_<< "]");
+                ROS_ERROR_STREAM(ros::this_node::getName() << ": failed to send EGM stop signal! [Attempt " << i + 1 << "/" << rws_max_signal_retries_ << "]");
             }
         }
     }
@@ -416,7 +402,6 @@ bool YumiEGMInterface::stopEGM()
 
 YumiHWEGM::YumiHWEGM() : YumiHW(), is_initialized_(false)
 {
-
 }
 
 YumiHWEGM::~YumiHWEGM()
@@ -424,7 +409,7 @@ YumiHWEGM::~YumiHWEGM()
     yumi_egm_interface_.stop();
 }
 
-void YumiHWEGM::setup(const std::string& ip, const std::string& port)
+void YumiHWEGM::setup(const std::string &ip, const std::string &port)
 {
     ip_ = ip;
     port_ = port;
@@ -432,15 +417,15 @@ void YumiHWEGM::setup(const std::string& ip, const std::string& port)
 
 bool YumiHWEGM::init()
 {
-    if(is_initialized_) 
+    if (is_initialized_)
     {
         return false;
     }
     //current_strategy_ = JOINT_VELOCITY;
 
     bool success = yumi_egm_interface_.init(ip_, port_);
-    
-    if(!success) 
+
+    if (!success)
     {
         return false;
     }
@@ -449,11 +434,10 @@ bool YumiHWEGM::init()
     return true;
 }
 
-
-void YumiHWEGM::read(ros::Time time, ros::Duration period) 
+void YumiHWEGM::read(ros::Time time, ros::Duration period)
 {
-    if(!is_initialized_) 
-    { 
+    if (!is_initialized_)
+    {
         return;
     }
 
@@ -470,17 +454,16 @@ void YumiHWEGM::read(ros::Time time, ros::Duration period)
         // joint_velocity_[j] = (joint_position_[j] - joint_position_prev_[j]) / period.toSec();
 
         // Estimation of joint velocity via finite differences method of first order and exponential smoothing
-        joint_velocity_[j] = filters::exponentialSmoothing((joint_position_[j]-joint_position_prev_[j])/period.toSec(), joint_velocity_[j], 0.04); 
+        joint_velocity_[j] = filters::exponentialSmoothing((joint_position_[j] - joint_position_prev_[j]) / period.toSec(), joint_velocity_[j], 0.04);
     }
 
     data_buffer_mutex_.unlock();
 }
 
-
 void YumiHWEGM::write(ros::Time time, ros::Duration period)
 {
-    if(!is_initialized_) 
-    { 
+    if (!is_initialized_)
+    {
         return;
     }
 

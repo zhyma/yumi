@@ -1,6 +1,6 @@
 // Boost
 #include <boost/bind.hpp>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 // ROS
 #include <ros/ros.h>
@@ -18,7 +18,6 @@
 class YumiHWsimPlugin : public gazebo::ModelPlugin
 {
 public:
-
   YumiHWsimPlugin() : gazebo::ModelPlugin() {}
   virtual ~YumiHWsimPlugin()
   {
@@ -29,7 +28,8 @@ public:
   // Overloaded Gazebo entry point
   virtual void Load(gazebo::physics::ModelPtr parent, sdf::ElementPtr sdf)
   {
-    std::cout << "yumi_hw" << "Loading yumi_hw plugin" << std::endl;
+    std::cout << "yumi_hw"
+              << "Loading yumi_hw plugin" << std::endl;
 
     // Save pointers to the model
     parent_model_ = parent;
@@ -38,20 +38,20 @@ public:
     // Error message if the model couldn't be found
     if (!parent_model_)
     {
-      ROS_ERROR_STREAM_NAMED("loadThread","parent model is NULL");
+      ROS_ERROR_STREAM_NAMED("loadThread", "parent model is NULL");
       return;
     }
 
     // Check that ROS has been initialized
-    if(!ros::isInitialized())
+    if (!ros::isInitialized())
     {
-      ROS_FATAL_STREAM_NAMED("yumi_hw","A ROS node for Gazebo has not been initialized, unable to load plugin. "
-        << "Load the Gazebo system plugin 'libgazebo_ros_api_plugin.so' in the gazebo_ros package)");
+      ROS_FATAL_STREAM_NAMED("yumi_hw", "A ROS node for Gazebo has not been initialized, unable to load plugin. "
+                                            << "Load the Gazebo system plugin 'libgazebo_ros_api_plugin.so' in the gazebo_ros package)");
       return;
     }
 
     // Get namespace for nodehandle
-    if(sdf_->HasElement("robotNamespace"))
+    if (sdf_->HasElement("robotNamespace"))
     {
       robot_namespace_ = sdf_->GetElement("robotNamespace")->Get<std::string>();
     }
@@ -74,33 +74,32 @@ public:
     ros::Duration gazebo_period(parent_model_->GetWorld()->GetPhysicsEngine()->GetMaxStepSize());
 
     // Decide the plugin control period
-    if(sdf_->HasElement("controlPeriod"))
+    if (sdf_->HasElement("controlPeriod"))
     {
       control_period_ = ros::Duration(sdf_->Get<double>("controlPeriod"));
 
       // Check the period against the simulation period
-      if( control_period_ < gazebo_period )
+      if (control_period_ < gazebo_period)
       {
-        ROS_ERROR_STREAM_NAMED("yumi_hw","Desired controller update period ("<<control_period_
-          <<" s) is faster than the gazebo simulation period ("<<gazebo_period<<" s).");
+        ROS_ERROR_STREAM_NAMED("yumi_hw", "Desired controller update period (" << control_period_
+                                                                               << " s) is faster than the gazebo simulation period (" << gazebo_period << " s).");
       }
-      else if( control_period_ > gazebo_period )
+      else if (control_period_ > gazebo_period)
       {
-        ROS_WARN_STREAM_NAMED("yumi_hw","Desired controller update period ("<<control_period_
-          <<" s) is slower than the gazebo simulation period ("<<gazebo_period<<" s).");
+        ROS_WARN_STREAM_NAMED("yumi_hw", "Desired controller update period (" << control_period_
+                                                                              << " s) is slower than the gazebo simulation period (" << gazebo_period << " s).");
       }
     }
     else
     {
       control_period_ = gazebo_period;
-      ROS_DEBUG_STREAM_NAMED("yumi_hw","Control period not found in URDF/SDF, defaulting to Gazebo period of "
-        << control_period_);
+      ROS_DEBUG_STREAM_NAMED("yumi_hw", "Control period not found in URDF/SDF, defaulting to Gazebo period of "
+                                            << control_period_);
     }
 
     // Get parameters/settings for controllers from ROS param server
     model_nh_ = ros::NodeHandle(robot_namespace_);
     ROS_INFO_NAMED("yumi_hw", "Starting yumi_hw plugin in namespace: %s", robot_namespace_.c_str());
-
 
     // Read urdf from ros parameter server then
     // setup actuators and mechanism control node.
@@ -108,24 +107,22 @@ public:
     const std::string urdf_string = getURDF(robot_description_);
 
     // Load the YumiHWsim abstraction to interface the controllers with the gazebo model
-    robot_hw_sim_.reset( new YumiHWGazebo() );
+    robot_hw_sim_.reset(new YumiHWGazebo());
     robot_hw_sim_->create(robot_namespace_, urdf_string);
     robot_hw_sim_->setParentModel(parent_model_);
-    if(!robot_hw_sim_->init())
+    if (!robot_hw_sim_->init())
     {
-      ROS_FATAL_NAMED("yumi_hw","Could not initialize robot simulation interface");
+      ROS_FATAL_NAMED("yumi_hw", "Could not initialize robot simulation interface");
       return;
     }
 
     // Create the controller manager
-    ROS_INFO_STREAM_NAMED("ros_control_plugin","Loading controller_manager");
-    controller_manager_.reset
-      (new controller_manager::ControllerManager(robot_hw_sim_.get(), model_nh_));
+    ROS_INFO_STREAM_NAMED("ros_control_plugin", "Loading controller_manager");
+    controller_manager_.reset(new controller_manager::ControllerManager(robot_hw_sim_.get(), model_nh_));
 
     // Listen to the update event. This event is broadcast every simulation iteration.
     update_connection_ =
-      gazebo::event::Events::ConnectWorldUpdateBegin
-      (boost::bind(&YumiHWsimPlugin::Update, this));
+        gazebo::event::Events::ConnectWorldUpdateBegin(boost::bind(&YumiHWsimPlugin::Update, this));
 
     ROS_INFO_NAMED("yumi_hw", "Loaded yumi_hw.");
   }
@@ -139,7 +136,7 @@ public:
     ros::Duration sim_period = sim_time_ros - last_update_sim_time_ros_;
 
     // Check if we should update the controllers
-    if(sim_period >= control_period_) 
+    if (sim_period >= control_period_)
     {
       // Store this simulation time
       last_update_sim_time_ros_ = sim_time_ros;
@@ -166,7 +163,6 @@ public:
   }
 
 private:
-
   // Get the URDF XML from the parameter server
   std::string getURDF(std::string param_name) const
   {
@@ -179,14 +175,16 @@ private:
       if (model_nh_.searchParam(param_name, search_param_name))
       {
         ROS_INFO_ONCE_NAMED("YumiHWsim", "YumiHWsim plugin is waiting for model"
-          " URDF in parameter [%s] on the ROS param server.", search_param_name.c_str());
+                                         " URDF in parameter [%s] on the ROS param server.",
+                            search_param_name.c_str());
 
         model_nh_.getParam(search_param_name, urdf_string);
       }
       else
       {
         ROS_INFO_ONCE_NAMED("YumiHWsim", "YumiHWsim plugin is waiting for model"
-          " URDF in parameter [%s] on the ROS param server.", robot_description_.c_str());
+                                         " URDF in parameter [%s] on the ROS param server.",
+                            robot_description_.c_str());
 
         model_nh_.getParam(param_name, urdf_string);
       }
@@ -214,18 +212,16 @@ private:
 
   // Robot simulator interface
   std::string robot_hw_sim_type_str_;
-  boost::shared_ptr<YumiHWGazebo> robot_hw_sim_;
+  std::shared_ptr<YumiHWGazebo> robot_hw_sim_;
 
   // Controller manager
-  boost::shared_ptr<controller_manager::ControllerManager> controller_manager_;
+  std::shared_ptr<controller_manager::ControllerManager> controller_manager_;
 
   // Timing
   ros::Duration control_period_;
   ros::Time last_update_sim_time_ros_;
   ros::Time last_write_sim_time_ros_;
-
 };
 
 // Register this plugin with the simulator
 GZ_REGISTER_MODEL_PLUGIN(YumiHWsimPlugin);
-
