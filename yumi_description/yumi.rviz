@@ -345,7 +345,7 @@ Visualization Manager:
   Enabled: true
   Global Options:
     Background Color: 200; 200; 200
-    Fixed Frame: yumi_pedestal
+    Fixed Frame: world
     Frame Rate: 30
   Name: root
   Tools:
