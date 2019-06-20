@@ -44,9 +44,10 @@
 class YumiHW : public hardware_interface::RobotHW
 {
     public:
-		YumiHW() 
+		YumiHW()
 		{
 			n_joints_ = 14;
+      exponential_smoothing_alpha_ = 1.0;
 		}
 
 
@@ -69,7 +70,7 @@ class YumiHW : public hardware_interface::RobotHW
 		/* Control strategy get/set */
 		ControlStrategy getControlStrategy(){ return current_strategy_;};
 		void setControlStrategy( ControlStrategy strategy){current_strategy_ = strategy;};
-		
+
 
 		/* RobotHW primitives */
 		/* This functions must be implemented depending on the outlet (Real, Gazebo, etc.) */
@@ -107,7 +108,7 @@ class YumiHW : public hardware_interface::RobotHW
 		/* Joint limits */
 		std::vector<double>
 			joint_lower_limits_,
-			joint_upper_limits_; 
+			joint_upper_limits_;
 
 		/* Joint state */
 		std::vector<double>
@@ -115,7 +116,7 @@ class YumiHW : public hardware_interface::RobotHW
 			joint_position_prev_,
 			joint_velocity_,
 			joint_effort_;
-		
+
 		/* Joint commands */
 		std::vector<double>
 			joint_position_command_,
@@ -123,7 +124,7 @@ class YumiHW : public hardware_interface::RobotHW
 
 		/* Set all members to default values */
 		void reset();
-		
+
 		/* Transmissions in this plugin's scope */
 		std::vector<transmission_interface::TransmissionInfo> transmissions_;
 
@@ -148,6 +149,9 @@ class YumiHW : public hardware_interface::RobotHW
 		void readFTsensors();
 		boost::mutex ft_data_mutex_r_, ft_data_mutex_l_;
 
+    protected:
+    double exponential_smoothing_alpha_;
+
     private:
 
 		/* Get Transmissions from the URDF */
@@ -166,6 +170,7 @@ class YumiHW : public hardware_interface::RobotHW
 			const hardware_interface::JointHandle& joint_handle_velocity,
 			const urdf::Model *const urdf_model,
 			double *const lower_limit, double *const upper_limit);
+
 
 }; // class
 

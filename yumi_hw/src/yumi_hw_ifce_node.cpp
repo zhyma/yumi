@@ -82,10 +82,12 @@ int main( int argc, char** argv )
   std::string ip;
   std::string name;
   bool use_egm;
+  double control_rate;
   yumi_nh.param("port", port, 80);
   yumi_nh.param("ip", ip, std::string("192.168.125.1") );
   yumi_nh.param("name", name, std::string("yumi"));
   yumi_nh.param("use_egm", use_egm, false);
+  yumi_nh.param("control_rate", control_rate, 500.0);
 
   /* Get the general robot description, the YumiHW class will take care of parsing what's useful to itself */
   std::string urdf_string = getURDF(yumi_nh, "/robot_description");
@@ -94,6 +96,7 @@ int main( int argc, char** argv )
   float optodaq_pub_rate_hz;
   int optodaq_filter;
   bool optodaq_cancel_bias;
+  double exponential_smoothing_alpha;
   std::string optodaq_ip_l, optodaq_ip_r;
   std::string optodaq_frame_id_l, optodaq_frame_id_r;
   yumi_nh.param("optodaq_pub_rate_hz", optodaq_pub_rate_hz, 1000.0f);
@@ -101,6 +104,7 @@ int main( int argc, char** argv )
   yumi_nh.param("optodaq_cancel_bias", optodaq_cancel_bias, false);
   yumi_nh.param("optodaq_ip_l", optodaq_ip_l, std::string("192.168.125.3"));
   yumi_nh.param("optodaq_ip_r", optodaq_ip_r, std::string("192.168.125.4"));
+  yumi_nh.param("exponential_smoothing_alpha", exponential_smoothing_alpha, 1.0);
 
   YumiHW* yumi_robot;
 
@@ -165,6 +169,8 @@ int main( int argc, char** argv )
   ROS_INFO("--------------------------------------------------------------------------------------------------------------");
   // boost::thread ft_sensors_thread(boost::bind(&YumiHW::readFTsensors, yumi_robot));
 
+  ros::Rate rate(control_rate);
+  ros::Time prev = ros::Time::now();
   /* Main control loop */
   while( !g_quit )
   {
@@ -176,17 +182,20 @@ int main( int argc, char** argv )
       curr.nsec = ts.tv_nsec;
       period = curr - last;
       last = curr;
-    } 
+    }
     else
     {
       ROS_FATAL("Failed to poll realtime clock!");
       break;
     }
 
+    // period = now - prev;
+    // prev = ros::Time::now();
+
     /* Read the state from YuMi */
     yumi_robot->read(now, period);
     yumi_robot->readFTsensors();
-    
+
     /* Update the controllers */
     manager.update(now, period);
 
@@ -195,6 +204,7 @@ int main( int argc, char** argv )
 
     // std::cout << "Control loop period is " << period.toSec() * 1000 << " ms" << std::endl;
     control_period_pub.publish(period.toSec());
+    // rate.sleep();
 
   }
 
