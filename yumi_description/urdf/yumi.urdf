@@ -635,8 +635,8 @@
     </actuator>
   </transmission>
   <!--joint between {parent} and base-->
-  <joint name="yumi_link_7_r_joint_daq" type="fixed">
-    <origin rpy="0 3.14159265359 -0.785398163397" xyz="0 0 0.033"/>
+  <joint name="yumi_link_7_r_joint" type="fixed">
+    <origin rpy="0 0 1.96349540849" xyz="0 0 0.033"/>
     <parent link="yumi_link_7_r"/>
     <child link="optodaq_r_sensor_link"/>
   </joint>
@@ -650,7 +650,7 @@
     </visual>
   </link>
   <!--joint between {parent} and base-->
-  <joint name="yumi_link_7_l_joint_daq" type="fixed">
+  <joint name="yumi_link_7_l_joint" type="fixed">
     <origin rpy="0 3.14159265359 -0.785398163397" xyz="0 0 0.033"/>
     <parent link="yumi_link_7_l"/>
     <child link="optodaq_l_sensor_link"/>
@@ -666,7 +666,7 @@
   </link>
   <!--joint between {parent} and base-->
   <joint name="optodaq_r_sensor_link_joint" type="fixed">
-    <origin rpy="3.14159265359 0.0 0.785398163397" xyz="0 0 -0.033"/>
+    <origin rpy="3.14159265359 0.0 0.785398163397" xyz="0 0 0.033"/>
     <parent link="optodaq_r_sensor_link"/>
     <child link="gripper_r_base"/>
   </joint>
@@ -888,35 +888,5 @@
       <mechanicalReduction>1</mechanicalReduction>
     </actuator>
   </transmission>
-  <!--joint between {parent} and base-->
-  <joint name="gripper_r_joint" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0 0"/>
-    <parent link="gripper_r"/>
-    <child link="fold_case_sensor_link"/>
-  </joint>
-  <link name="fold_case_sensor_link">
-    <visual>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <geometry>
-        <cylinder length="0.24" radius="0.06"/>
-      </geometry>
-      <material name="Orange"/>
-    </visual>
-  </link>
-  <!--joint between {parent} and base-->
-  <joint name="gripper_l_joint" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0 0"/>
-    <parent link="gripper_l"/>
-    <child link="rod_piece_sensor_link"/>
-  </joint>
-  <link name="rod_piece_sensor_link">
-    <visual>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <geometry>
-        <cylinder length="0.16" radius="0.06"/>
-      </geometry>
-      <material name="Orange"/>
-    </visual>
-  </link>
   <!-- Pure YuMi URDF, with no joints connecting it to any other robot or pedestal. Neither accessories. -->
 </robot>
