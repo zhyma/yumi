@@ -81,10 +81,12 @@ int main( int argc, char** argv )
   std::string ip;
   std::string name;
   bool use_egm;
+  double control_rate;
   yumi_nh.param("port", port, 80);
   yumi_nh.param("ip", ip, std::string("192.168.125.1") );
   yumi_nh.param("name", name, std::string("yumi"));
   yumi_nh.param("use_egm", use_egm, false);
+  yumi_nh.param("control_rate", control_rate, 500.0);
 
   /* Get the general robot description, the YumiHW class will take care of parsing what's useful to itself */
   std::string urdf_string = getURDF(yumi_nh, "/robot_description");
@@ -135,6 +137,8 @@ int main( int argc, char** argv )
   ros::Publisher control_period_pub;
   control_period_pub = yumi_nh.advertise<std_msgs::Float64>("/yumi/egm_control_period", 1000);
 
+  ros::Rate rate(control_rate);
+  ros::Time prev = ros::Time::now();
   /* Main control loop */
   while( !g_quit )
   {
@@ -146,16 +150,19 @@ int main( int argc, char** argv )
       curr.nsec = ts.tv_nsec;
       period = curr - last;
       last = curr;
-    } 
+    }
     else
     {
       ROS_FATAL("Failed to poll realtime clock!");
       break;
     }
 
+    // period = now - prev;
+    // prev = ros::Time::now();
+
     /* Read the state from YuMi */
     yumi_robot->read(now, period);
-    
+
     /* Update the controllers */
     manager.update(now, period);
 
@@ -164,6 +171,7 @@ int main( int argc, char** argv )
 
     // std::cout << "Control loop period is " << period.toSec() * 1000 << " ms" << std::endl;
     control_period_pub.publish(period.toSec());
+    // rate.sleep();
 
   }
 

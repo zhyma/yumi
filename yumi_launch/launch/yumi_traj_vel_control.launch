@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<launch> 
+<launch>
 
     <arg name="name" default="yumi" doc="The robot name. Ensure this is the same name you give to the arm in the urdf instance."/>
 
@@ -10,7 +10,7 @@
                                      joint_traj_vel_controller_r"/>
     <node name="arm_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="$(arg arm_controllers)" ns="/yumi"/>
 
-	<!--  Hardware interfaces for the joints and grippers -->    
+	<!--  Hardware interfaces for the joints and grippers -->
     <arg name="arms_hardware_interface" default="VelocityJointInterface"/>
     <arg name="grippers_hardware_interface" default="EffortJointInterface"/>
 
@@ -28,15 +28,20 @@
 
     <!-- Calls to yumi_hw members -->
     <!-- The real hardware interface -->
-    <node required="true" name="yumi_hw" pkg="yumi_hw" type="yumi_hw_ifce_node" respawn="false" ns="/yumi" output="screen"> 
+    <node required="true" name="yumi_hw" pkg="yumi_hw" type="yumi_hw_ifce_node" respawn="false" ns="/yumi" output="screen">
+    <!-- Velocity estimate smoothing -->
+		<arg name="exponential_smoothing_alpha" default="1.0"/>
+    <arg name="control_rate" default="100.0"/>
         <param name="name" value="$(arg name)" />
         <param name="ip" value="$(arg ip)"/>
         <param name="port" value="$(arg port)"/>
         <param name="use_egm" value="$(arg egm)"/>
+        <param name="exponential_smoothing_alpha" value="$(arg exponential_smoothing_alpha)"/>
+        <param name="control_rate" value="$(arg control_rate)"/>
     </node>
-     
+
     <!-- The grippers hardware interface -->
-    <node required="true" name="yumi_gripper" pkg="yumi_hw" type="yumi_gripper_node" respawn="false" ns="/yumi" output="screen"> 
+    <node required="true" name="yumi_gripper" pkg="yumi_hw" type="yumi_gripper_node" respawn="false" ns="/yumi" output="screen">
         <param name="ip" value="$(arg ip)"/>
     </node>
 
@@ -50,4 +55,3 @@
     <node name="rviz" pkg="rviz" type="rviz" args="-d $(find yumi_description)/yumi.rviz"/>
 
 </launch>
-
