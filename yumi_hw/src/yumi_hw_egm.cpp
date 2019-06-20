@@ -358,7 +358,14 @@ void YumiEGMInterface::configureEGM(boost::shared_ptr<EGMInterfaceDefault> egm_i
     configuration.basic.use_conditions = false;
     configuration.basic.axes = EGMInterfaceConfiguration::Seven;
     configuration.basic.execution_mode = EGMInterfaceConfiguration::Direct;
-    configuration.communication.use_speed = !position;
+    if (position)
+    {
+      configuration.communication.use_position = true;
+    }
+    else
+    {
+      configuration.communication.use_speed = true;
+    }
     configuration.logging.use_logging = false;
     configuration.communication.use_position = position;
 
@@ -433,7 +440,8 @@ bool YumiEGMInterface::stopEGM()
 
 YumiHWEGM::YumiHWEGM() : YumiHW(), is_initialized_(false)
 {
-
+  ros::NodeHandle nh("~");
+  nh.param("egm/use_position_mode", position_, false);
 }
 
 YumiHWEGM::~YumiHWEGM()
@@ -511,8 +519,14 @@ void YumiHWEGM::write(ros::Time time, ros::Duration period)
         joint_pos_targets_[j] = joint_position_command_[j];
     }
 
-    yumi_egm_interface_.setJointVelTargets(joint_vel_targets_);
-    yumi_egm_interface_.setJointPosTargets(joint_pos_targets_);
+    if (!position_)
+    {
+      yumi_egm_interface_.setJointVelTargets(joint_vel_targets_);
+    }
+    else
+    {
+      yumi_egm_interface_.setJointPosTargets(joint_pos_targets_);
+    }
 
     data_buffer_mutex_.unlock();
 }

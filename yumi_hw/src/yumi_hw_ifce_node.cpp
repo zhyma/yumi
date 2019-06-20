@@ -176,21 +176,21 @@ int main( int argc, char** argv )
   {
     // get the time / period
     now = ros::Time::now();
-    // if (!clock_gettime(CLOCK_MONOTONIC, &ts))
-    // {
-    //   curr.sec = ts.tv_sec;
-    //   curr.nsec = ts.tv_nsec;
-    //   period = curr - last;
-    //   last = curr;
-    // }
-    // else
-    // {
-    //   ROS_FATAL("Failed to poll realtime clock!");
-    //   break;
-    // }
+    if (!clock_gettime(CLOCK_MONOTONIC, &ts))
+    {
+      curr.sec = ts.tv_sec;
+      curr.nsec = ts.tv_nsec;
+      period = curr - last;
+      last = curr;
+    }
+    else
+    {
+      ROS_FATAL("Failed to poll realtime clock!");
+      break;
+    }
 
-    period = now - prev;
-    prev = ros::Time::now();
+    // period = now - prev;
+    // prev = ros::Time::now();
 
     /* Read the state from YuMi */
     yumi_robot->read(now, period);
@@ -204,7 +204,7 @@ int main( int argc, char** argv )
 
     // std::cout << "Control loop period is " << period.toSec() * 1000 << " ms" << std::endl;
     control_period_pub.publish(period.toSec());
-    rate.sleep();
+    // rate.sleep();
 
   }
 
