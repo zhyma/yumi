@@ -45,6 +45,8 @@ class YumiGripperStateHandler : public industrial::message_handler::MessageHandl
 			boost::mutex::scoped_lock lock(data_buffer_mutex);
 			left = gripper_positions[0];
 			right = gripper_positions[1];
+
+			return true;
 		}
 
 		bool init(industrial::smpl_msg_connection::SmplMsgConnection* connection)
@@ -193,6 +195,8 @@ class YumiGripperStateInterface {
 			manager_.add(&gripper_handler,false);
 
 			stopComm_ = false;
+
+			return true;
 		}
 	
 };
