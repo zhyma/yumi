@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<launch> 
+
+    <!--yumi_traj_pos_control.launch part-->
+
+	<arg name="name" default="yumi" doc="The robot name. Ensure this is the same name you give to the arm in the urdf instance."/>
+	
+	<arg name="ip" default="192.168.125.1"/>
+	<rosparam file="$(find yumi_control)/config/gripper_controllers.yaml" command="load" ns="/yumi"/>
+	<rosparam file="$(find yumi_control)/config/traj_controllers.yaml" command="load" ns="/yumi"/>
+    <arg name="arm_controllers" default="joint_state_controller
+                                     joint_traj_pos_controller_l
+                                     joint_traj_pos_controller_r"/>
+    <node name="arm_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="$(arg arm_controllers)" ns="/yumi"/>
+
+	<!--  Hardware interfaces for the joints and grippers -->    
+    <arg name="arms_hardware_interface" default="PositionJointInterface"/>
+    <arg name="grippers_hardware_interface" default="EffortJointInterface"/>
+
+  <!-- demo_online.launch section 1-->
+  <param name="/move_group/trajectory_execution/execution_duration_monitoring" value="false" />
+  <!-- By default, we do not start a database (it can be large) -->
+  <arg name="db" default="false" />
+  <!-- Allow user to specify database location -->
+  <arg name="db_path" default="$(find yumi_moveit_config)/default_warehouse_mongo_db" />
+
+  <!-- By default, we are not in debug mode -->
+  <arg name="debug" default="false" />
+  <!-- demo_online.launch section 1 end-->
+
+    <!-- URDF / SRDF parameters -->
+    <arg name="yumi_setup" default="default"/>
+    <param name="robot_description" command="$(find xacro)/xacro '$(find yumi_description)/urdf/yumi.urdf.xacro' arms_interface:=$(arg arms_hardware_interface) grippers_interface:=$(arg grippers_hardware_interface) yumi_setup:=$(arg yumi_setup)" />
+
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+		<remap from="/joint_states" to="/yumi/joint_states" />
+	</node>
+
+	<!-- the real hardware interface /-->
+	<node required="true" name="yumi_hw" pkg="yumi_hw" type="yumi_hw_ifce_node" respawn="false" ns="/yumi" output="screen"> <!--launch-prefix="xterm -e gdb - -args"-->
+		<param name="name" value="$(arg name)" />
+		<param name="ip" value="$(arg ip)"/>
+	</node>
+
+
+    <node required="true" name="yumi_gripper" pkg="yumi_hw" type="yumi_gripper_node" respawn="false" ns="/yumi" output="screen"> 
+        <param name="ip" value="$(arg ip)"/>
+    </node>
+
+    <!-- Joint state and robot state publisher calls -->
+    <node name="yumi_joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" >
+        <rosparam param="source_list">["/yumi/joint_states", "/yumi/gripper_states"]</rosparam>
+    </node>
+
+    <node name="yumi_robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+  <!-- demo_online.launch section 2-->
+  <!-- Run the main MoveIt executable without trajectory execution (we do not have controllers configured by default) -->
+  <include file="$(find yumi_moveit_config)/launch/move_group.launch">
+    <arg name="allow_trajectory_execution" value="true"/>
+    <arg name="fake_execution" value="false"/>
+    <arg name="info" value="true"/>
+    <arg name="debug" value="$(arg debug)"/>
+  </include>
+
+  <!-- Run Rviz and load the default config to see the state of the move_group node -->
+  <include file="$(find yumi_moveit_config)/launch/moveit_rviz.launch">
+    <arg name="config" value="true"/>
+    <arg name="debug" value="$(arg debug)"/>
+  </include>
+
+  <!-- If database loading was enabled, start mongodb as well -->
+  <include file="$(find yumi_moveit_config)/launch/default_warehouse_db.launch" if="$(arg db)">
+    <arg name="moveit_warehouse_database_path" value="$(arg db_path)"/>
+  </include>
+  <!-- demo_online.launch section 2 end-->
+
+
+</launch>
+
