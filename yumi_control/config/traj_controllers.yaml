@@ -26,6 +26,24 @@ joint_traj_pos_controller_r:
     - yumi_joint_5_r
     - yumi_joint_6_r
 
+joint_traj_pos_controller_both:
+  type: "position_controllers/JointTrajectoryController"
+  joints:
+    - yumi_joint_1_l
+    - yumi_joint_2_l
+    - yumi_joint_7_l
+    - yumi_joint_3_l
+    - yumi_joint_4_l
+    - yumi_joint_5_l
+    - yumi_joint_6_l
+    - yumi_joint_1_r
+    - yumi_joint_2_r
+    - yumi_joint_7_r
+    - yumi_joint_3_r
+    - yumi_joint_4_r
+    - yumi_joint_5_r
+    - yumi_joint_6_r
+
 # Joint Trajectory Velocity Controller ----------------------------------------
 joint_traj_vel_controller_l:
   type: "velocity_controllers/JointTrajectoryController"
