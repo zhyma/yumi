@@ -39,6 +39,13 @@
       <robotNamespace>/yumi</robotNamespace>
     </plugin>
   </gazebo>
+
+  <link name="world" />
+  <joint name="world_to_base_link" type="fixed">
+       <parent link="world"/>
+       <child link="yumi_base_link"/>
+  </joint>
+
   <link name="yumi_base_link"/>
   <joint name="yumi_base_link_to_body" type="fixed">
     <parent link="yumi_base_link"/>
