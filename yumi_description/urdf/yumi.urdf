@@ -44,6 +44,7 @@
   <joint name="world_to_base_link" type="fixed">
        <parent link="world"/>
        <child link="yumi_base_link"/>
+       <origin rpy="0 0 0" xyz="0 0 0.1"/>
   </joint>
 
   <link name="yumi_base_link"/>
